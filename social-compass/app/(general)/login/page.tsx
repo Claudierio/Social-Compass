@@ -89,7 +89,7 @@ export default function Login() {
             </Typography>
             <form onSubmit={handleRegister}>
               <TextField
-                label="Usuário"
+                label="Nome"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 fullWidth
@@ -168,15 +168,20 @@ export default function Login() {
               <div className={styles.parentContainer}>
                 <span className={styles.loginContainer}>
                   Novo por aqui?{" "}
-                  <Link className={styles.loginLink} href="">
+                  <Link className={styles.loginLink} href="/register">
                     <span>Registre-se</span>
                   </Link>
                 </span>
               </div>
+              <div>
+              <Link className={styles.loginLink} href="/homepage">
+                    <span>Home</span>
+                  </Link>
+              </div>
             </form>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} sm={6}>
           <img
             src="/compass-login.png"
