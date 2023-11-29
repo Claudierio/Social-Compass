@@ -1,41 +1,43 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import styles from "./Navbar.module.scss";
-import userAvatar from "/public/icons/user-avatar.png";
-import global from "/public/icons/global.png";
-import bell from "/public/icons/bell.png";
-import goArrow from "/public/icons/goArrow.png";
-import backArrow from "/public/icons/backArrow.png";
+// components/Navbar.tsx
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import useStore from '../../(general)/store'; // Importe a loja Zustand
+import styles from './Navbar.module.scss';
+import userAvatar from '/public/icons/user-avatar.png';
+import global from '/public/icons/global.png';
+import bell from '/public/icons/bell.png';
+import goArrow from '/public/icons/goArrow.png';
+import backArrow from '/public/icons/backArrow.png';
 
 const drawerWidth = 240;
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
+  transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: `-${drawerWidth}px`,
   ...(open && {
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -48,36 +50,49 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
   padding: theme.spacing(0, 1),
 
   ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
+  justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft() {
+interface NavbarProps {
+  open: boolean;
+  selectedItem: string;
+  modalOpen: boolean;
+  setOpen: (value: boolean) => void;
+  setSelectedItem: (item: string) => void;
+  setModalOpen: (value: boolean) => void;
+}
+
+export default function PersistentDrawerLeft({
+  open,
+  selectedItem,
+  modalOpen,
+  setOpen,
+  setSelectedItem,
+  setModalOpen,
+}: NavbarProps) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState("Página inicial");
-  const [modalOpen, setModalOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -95,26 +110,26 @@ export default function PersistentDrawerLeft() {
 
   return (
     <header className={styles.main}>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar
             sx={{
-              backgroundColor: "#1E1F23",
-              display: "flex",
-              justifyContent: "space-between",
+              backgroundColor: '#1E1F23',
+              display: 'flex',
+              justifyContent: 'space-between',
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               {modalOpen ? null : (
                 <img
                   src={goArrow.src}
                   alt="Abrir menu"
                   style={{
-                    width: "50px",
-                    height: "50px",
-                    cursor: "pointer",
-                    marginRight: "16px",
+                    width: '50px',
+                    height: '50px',
+                    cursor: 'pointer',
+                    marginRight: '16px',
                   }}
                   onClick={handleDrawerOpen}
                 />
@@ -126,10 +141,10 @@ export default function PersistentDrawerLeft() {
                     src={backArrow.src}
                     alt="Fechar menu"
                     style={{
-                      width: "50px",
-                      height: "50px",
-                      cursor: "pointer",
-                      marginLeft: "16px",
+                      width: '50px',
+                      height: '50px',
+                      cursor: 'pointer',
+                      marginLeft: '16px',
                     }}
                     onClick={handleDrawerClose}
                   />
@@ -141,41 +156,38 @@ export default function PersistentDrawerLeft() {
               </Typography>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
                 src={global.src}
                 alt="Global Icon"
                 style={{
-                  width: "35px",
-                  height: "35px",
-                  filter: "invert(100%)",
-                  marginRight: "5px", // Adiciona espaçamento entre as imagens
+                  width: '35px',
+                  height: '35px',
+                  filter: 'invert(100%)',
+                  marginRight: '5px',
                 }}
               />
               <img
                 src={bell.src}
                 alt="Bell Icon"
                 style={{
-                  width: "35px",
-                  height: "35px",
-                  filter: "invert(100%)",
-                  marginRight: "5px", // Adiciona espaçamento entre as imagens
+                  width: '35px',
+                  height: '35px',
+                  filter: 'invert(100%)',
+                  marginRight: '5px',
                 }}
               />
 
-              <Typography
-                variant="body1"
-                sx={{ marginRight: 2, color: "white" }}
-              >
+              <Typography variant="body1" sx={{ marginRight: 2, color: 'white' }}>
                 Nome do Usuário
               </Typography>
               <img
                 src={userAvatar.src}
                 alt="User Avatar"
                 style={{
-                  width: "50px",
-                  height: "50px",
-                  filter: "invert(100%)",
+                  width: '50px',
+                  height: '50px',
+                  filter: 'invert(100%)',
                 }}
               />
             </div>
@@ -185,11 +197,11 @@ export default function PersistentDrawerLeft() {
           sx={{
             width: drawerWidth,
             flexShrink: 0,
-            "& .MuiDrawer-paper": {
+            '& .MuiDrawer-paper': {
               width: drawerWidth,
-              boxSizing: "border-box",
-              backgroundColor: "#1E1F23",
-              color: "white",
+              boxSizing: 'border-box',
+              backgroundColor: '#1E1F23',
+              color: 'white',
             },
           }}
           variant="persistent"
@@ -199,26 +211,25 @@ export default function PersistentDrawerLeft() {
           <img src="/compass-logo.png" alt="Login Home" style={{}} />
           <Divider />
           <List>
-            {["Página inicial", "Meu perfil", "Marketplace", "Sair"].map(
-              (text, index) => (
-                <ListItem
-                  key={text}
-                  disablePadding
-                  sx={{
-                    backgroundColor: selectedItem === text ? "#FE2E05" : "",
-                  }}
-                >
-                  <ListItemButton onClick={() => handleItemClick(text)}>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              )
-            )}
+            {['Página inicial', 'Meu perfil', 'Marketplace', 'Sair'].map((text, index) => (
+              <ListItem
+                key={text}
+                disablePadding
+                sx={{
+                  backgroundColor: selectedItem === text ? '#FE2E05' : '',
+                }}
+              >
+                <ListItemButton onClick={() => handleItemClick(text)}>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
           <Divider />
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
+
         </Main>
       </Box>
     </header>
