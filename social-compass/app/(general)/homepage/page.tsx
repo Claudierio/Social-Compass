@@ -6,11 +6,12 @@ import React, { useState } from "react";
 import Navbar from "../../components/navbar";
 
 const HomePage = () => {
-
   return (
     <div>
-        <Navbar/>
-        
+      <Navbar />
+      
+      <h1>Homepage</h1>
+      <p>Teste</p>
     </div>
   );
 };

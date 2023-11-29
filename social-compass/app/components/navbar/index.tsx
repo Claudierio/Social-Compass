@@ -16,7 +16,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import styles from "./Navbar.module.scss";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import userAvatar from "/public/icons/user-avatar.png";
+import global from "/public/icons/global.png";
+import bell from "/public/icons/bell.png";
+import goArrow from "/public/icons/goArrow.png";
+import backArrow from "/public/icons/backArrow.png";
 
 const drawerWidth = 240;
 
@@ -72,13 +76,21 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function PersistentDrawerLeft() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState("Página inicial");
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    setModalOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setModalOpen(false);
+  };
+
+  const handleItemClick = (text: string) => {
+    setSelectedItem(text);
   };
 
   return (
@@ -93,29 +105,79 @@ export default function PersistentDrawerLeft() {
               justifyContent: "space-between",
             }}
           >
-            <div className={styles.testeaa}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={{ mr: 2, ...(open && { display: "none" }) }}
-              >
-                <MenuIcon />
-              </IconButton>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {modalOpen ? null : (
+                <img
+                  src={goArrow.src}
+                  alt="Abrir menu"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    cursor: "pointer",
+                    marginRight: "16px",
+                  }}
+                  onClick={handleDrawerOpen}
+                />
+              )}
+
+              <DrawerHeader>
+                {open && (
+                  <img
+                    src={backArrow.src}
+                    alt="Fechar menu"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      cursor: "pointer",
+                      marginLeft: "16px",
+                    }}
+                    onClick={handleDrawerClose}
+                  />
+                )}
+              </DrawerHeader>
+
               <Typography variant="h6" noWrap component="div">
                 Social Compass
               </Typography>
             </div>
 
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src={global.src}
+                alt="Global Icon"
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  filter: "invert(100%)",
+                  marginRight: "5px", // Adiciona espaçamento entre as imagens
+                }}
+              />
+              <img
+                src={bell.src}
+                alt="Bell Icon"
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  filter: "invert(100%)",
+                  marginRight: "5px", // Adiciona espaçamento entre as imagens
+                }}
+              />
+
               <Typography
                 variant="body1"
                 sx={{ marginRight: 2, color: "white" }}
               >
-                Username
+                Nome do Usuário
               </Typography>
-              <AccountCircleIcon color="inherit" />
+              <img
+                src={userAvatar.src}
+                alt="User Avatar"
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  filter: "invert(100%)",
+                }}
+              />
             </div>
           </Toolbar>
         </AppBar>
@@ -134,22 +196,19 @@ export default function PersistentDrawerLeft() {
           anchor="left"
           open={open}
         >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
           <img src="/compass-logo.png" alt="Login Home" style={{}} />
           <Divider />
           <List>
             {["Página inicial", "Meu perfil", "Marketplace", "Sair"].map(
               (text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
+                <ListItem
+                  key={text}
+                  disablePadding
+                  sx={{
+                    backgroundColor: selectedItem === text ? "#FE2E05" : "",
+                  }}
+                >
+                  <ListItemButton onClick={() => handleItemClick(text)}>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>

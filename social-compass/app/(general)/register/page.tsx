@@ -29,14 +29,10 @@ export default function Login() {
   const [email, setEmail] = useState("");
 
   const [date, setDate] = useState("");
-  const [labelVisible, setLabelVisible] = useState(false);
+  //const [labelVisible, setLabelVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
-  };
-
-  const handleTextFieldClick = () => {
-    setLabelVisible(true);
   };
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -166,19 +162,35 @@ export default function Login() {
                 }}
                 InputLabelProps={{ style: { color: "#757575" } }}
               />
+
               <TextField
-                label={labelVisible ? "Nascimento" : ""}
+                label={"Nascimento"}
                 value={date}
                 onChange={handleInputChange}
-                onClick={handleTextFieldClick}
-                type="date"
+                type="nascimento"
                 fullWidth
                 margin="normal"
                 variant="outlined"
                 InputProps={{
-                  style: { color: "#FFFFFF" },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <img
+                        src={iconCalendar.src}
+                        alt="Senha Icon"
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          filter: "invert(100%)",
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                  style: { color: "#FFF" },
                   classes: {
                     notchedOutline: styles.whiteBorder,
+                  },
+                  inputProps: {
+                    className: styles.whiteIcon,
                   },
                 }}
                 InputLabelProps={{ style: { color: "#757575" } }}
