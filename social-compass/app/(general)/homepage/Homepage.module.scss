@@ -1,0 +1,174 @@
+.compass {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: #1E1F23;
+    width: 250px;
+    height: 146vh;
+    padding: 42px 10px 42px 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    border-width: 2px 2px 2px 0px;
+    border-style: solid;
+    border-color: #2E2F36;
+}
+
+.home {
+    position: absolute;
+    top: 1px;
+    left: 272px;
+    padding: 25px;
+    width: 1025px;
+    height: 13px;
+    background: #1E1F23;
+    border-width: 2px 2px 2px 0px;
+    border-style: solid;
+    border-color: #2E2F36;
+    color: #ffffff;
+    font-weight: 500;
+    margin-top: 0;
+    margin-left: 0;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.footer {
+    position: absolute;
+    top: 20px;
+    right: 550px;
+    background: #1E1F23;
+}
+
+.faHome {
+    margin: 20px;
+    left: 530px;
+    width: 20px;
+    color: #f5f5f5;
+    z-index: 1;
+    margin-top: 12px;
+    background-color: #1E1F23;
+}
+
+.flor {
+    position: absolute;
+    top: 20px;
+    left: 950px;
+    background: #1E1F23;
+}
+
+.homePost {
+    display: flex;
+    background: #1E1F23;
+    justify-content: flex-start;
+    position: absolute;
+    padding: 16px;
+    border: 2px solid #2E2F36;
+    border-radius: 16px;
+    width: 75%;
+    height: 120px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.button {
+    padding: 15px 24px;
+    align-items: flex-start;
+    border-radius: 46px;
+    border: 1px solid var(--orange, #9e1a00);
+    background: var(--gradient-button, linear-gradient(180deg, #AD2D14 0%, #F42E07 100%));
+    position: absolute;
+    left: 89%;
+    bottom: 5px;
+    width: 100px
+}
+
+
+.accordions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    right: 0;
+    z-index: 1000;
+}
+
+.mainContent {
+    padding: 0px 36px;
+}
+
+
+@media (max-width: 767px) {
+    .mainContent {
+        margin-right: 0;
+    }
+}
+
+.textBox {
+    color: #4f4f55;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 24px;
+    width: 630px;
+    height: 37px;
+    border-radius: 46px;
+}
+
+.faPhoto,
+.faImg,
+.faClip,
+.faMap,
+.faSmile {
+    display: inline-block;
+    width: 20px;
+    height: 60px;
+    background-color: #1E1F23;
+}
+
+
+.faImg,
+.faClip,
+.faMap,
+.faSmile {
+    margin-left: 20px;
+}
+
+
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 24px;
+    margin-left: auto;
+    width: 230px;
+    height: 272px;
+    background: #1E1F23;
+    border: 2px solid #2E2F36;
+    border-radius: 16px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
+.container {
+    text-align: left;
+    background-color: #1E1F23;
+}
+
+.container input {
+    width: 100%;
+}
+
+.menuOpen {
+    width: calc(100% - 240px);
+
+}
+
+.avatarContainer {
+    display: flex;
+    width: 420%;
+}
+
