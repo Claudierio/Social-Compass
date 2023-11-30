@@ -5,7 +5,7 @@ import { create } from "zustand";
 import styles from "./Homepage.module.scss";
 import React, { useState } from "react";
 import Navbar from "../../components/navbar";
-import useStore from "../../(general)/store";
+import useStore from "../stateZustand";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -147,9 +147,14 @@ const HomePage = () => {
               d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
             />
           </svg>
-          <button type="submit" className={styles.button}>
+
+          <div className={styles.buttonPost}>
+          <button type="submit" className={styles.containerButton}>
             Postar
           </button>
+
+          </div>
+
         </div>
       </section>
 

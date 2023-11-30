@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import useStore from "../../(general)/store";
+import useStore from "../../(general)/stateZustand";
 import styles from "./Navbar.module.scss";
 import userAvatar from "/public/icons/user-avatar.png";
 import global from "/public/icons/global.png";
@@ -230,6 +230,7 @@ export default function PersistentDrawerLeft({
 
         <Main open={open}>
           <DrawerHeader />
+          <h1>teste</h1>
         </Main>
       </Box>
     </header>
