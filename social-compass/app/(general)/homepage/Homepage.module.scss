@@ -178,6 +178,20 @@
 
 @media (max-width: 767px) {
     .accordions {
-      display: none;
+        display: none;
     }
-  }
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.productPrice {
+    color: var(--gray-gray-300, #75767D);
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 400;
+
+}

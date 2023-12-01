@@ -25,8 +25,8 @@ const HomePage = () => {
   } = useStore();
 
   const homePostStyle = {
-    width: modalOpen ? "calc(75% - 240px)" : "75%",
-    marginLeft: modalOpen ? "240px" : "0",
+    width: modalOpen ? "calc(75% - 350px)" : "75%",
+    marginLeft: modalOpen ? "350px" : "0",
   };
 
   const [inputValue, setInputValue] = useState("No que você está pensando?");
@@ -36,9 +36,7 @@ const HomePage = () => {
   };
 
   return (
-    <div
-      className={styles.mainContent}
-    >
+    <div className={styles.mainContent}>
       <Navbar
         open={open}
         selectedItem={selectedItem}
@@ -50,7 +48,7 @@ const HomePage = () => {
 
       <section className={styles.homePost} style={homePostStyle}>
         <div className={styles.container}>
-          <div className={styles.avatarContainer} >
+          <div className={styles.avatarContainer}>
             <Avatar
               alt="Avatar"
               src={userAvatar.src}
@@ -176,7 +174,7 @@ const HomePage = () => {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography>Meus amigos</Typography>
+              <Typography style={{ color: "white" }}>Meus amigos</Typography>
             </AccordionSummary>
             <AccordionDetails
               style={{
@@ -211,11 +209,12 @@ const HomePage = () => {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography>Itens em Destaque </Typography>
+              <Typography style={{ color: "white" }}>Itens em Destaque </Typography>
             </AccordionSummary>
             <AccordionDetails
               style={{
                 display: "flex",
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -224,13 +223,20 @@ const HomePage = () => {
                 style={{
                   width: "32px",
                   height: "32px",
+                  marginRight: "16px",
                 }}
               />
-              <Typography>Armário Grande</Typography>
+              <div className={styles.productInfo}>
+                <Typography>Armário Grande</Typography>
+                <Typography className={styles.productPrice}>
+                  R$ 500,00
+                </Typography>
+              </div>
             </AccordionDetails>
             <AccordionDetails
               style={{
                 display: "flex",
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -239,28 +245,20 @@ const HomePage = () => {
                 style={{
                   width: "32px",
                   height: "32px",
+                  marginRight: "16px",
                 }}
               />
-              <Typography>Armário Grande</Typography>
-            </AccordionDetails>{" "}
-            <AccordionDetails
-              style={{
-                display: "flex",
-              }}
-            >
-              <Avatar
-                alt="Remy Sharp"
-                src={""}
-                style={{
-                  width: "32px",
-                  height: "32px",
-                }}
-              />
-              <Typography>Armário Grande</Typography>
+              <div className={styles.productInfo}>
+                <Typography>Armário Grande</Typography>
+                <Typography className={styles.productPrice}>
+                  R$ 500,00
+                </Typography>
+              </div>
             </AccordionDetails>
             <AccordionDetails
               style={{
                 display: "flex",
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -269,9 +267,37 @@ const HomePage = () => {
                 style={{
                   width: "32px",
                   height: "32px",
+                  marginRight: "16px",
                 }}
               />
-              <Typography>Armário Grande</Typography>
+              <div className={styles.productInfo}>
+                <Typography>Armário Grande</Typography>
+                <Typography className={styles.productPrice}>
+                  R$ 500,00
+                </Typography>
+              </div>
+            </AccordionDetails>
+            <AccordionDetails
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Avatar
+                alt="Remy Sharp"
+                src={""}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  marginRight: "16px",
+                }}
+              />
+              <div className={styles.productInfo}>
+                <Typography>Armário Grande</Typography>
+                <Typography className={styles.productPrice}>
+                  R$ 500,00
+                </Typography>
+              </div>
             </AccordionDetails>
           </Accordion>
         </div>

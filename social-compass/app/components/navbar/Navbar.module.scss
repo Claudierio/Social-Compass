@@ -1,13 +1,49 @@
-.main {
-    /* background: #17181c; */
-    color: white;
-    font-family: "Montserrat";
-    overflow: hidden;
-}
-
 @media (max-width: 767px) {
     .MuiDrawer-paper {
-      width: 100%;
+        width: 100%;
     }
-  }
+}
 
+.drawerContainer {
+    display: flex;
+    width: 240px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid var(--gray-gray-600, #2E2F36);
+}
+
+.drawerLinksBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.drawerLink {
+    display: flex;
+    width: 240px;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    border: 2px solid transparent;
+}
+
+.drawerLink:active,
+.drawerLink:focus {
+    background: var(--orange, #FE2E05);
+    color: black;
+}
+
+.activeLink {
+    background: var(--orange, #FE2E05);
+    color: black;
+    border-radius: 8px;
+}
+
+.drawerLink:hover {
+    color: #FE2E05;
+}

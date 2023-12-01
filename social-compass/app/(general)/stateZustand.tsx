@@ -1,7 +1,7 @@
 // store/store.ts
 import create from 'zustand';
 
-interface StoreState {
+interface GlobalState {
   open: boolean;
   selectedItem: string;
   modalOpen: boolean;
@@ -10,7 +10,7 @@ interface StoreState {
   setModalOpen: (value: boolean) => void;
 }
 
-const useStore = create<StoreState>((set) => ({
+const useStore = create<GlobalState>((set) => ({
   open: false,
   selectedItem: 'Página inicial',
   modalOpen: false,

@@ -19,8 +19,9 @@ import bell from "/public/icons/bell.png";
 import goArrow from "/public/icons/goArrow.png";
 import backArrow from "/public/icons/backArrow.png";
 import Avatar from "@mui/material/Avatar";
+import Link from "next/link";
 
-const drawerWidth = 240;
+const drawerWidth = 350;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -191,7 +192,6 @@ export default function PersistentDrawerLeft({
             </div>
           </Toolbar>
         </AppBar>
-
         <Drawer
           sx={{
             width: drawerWidth,
@@ -201,6 +201,7 @@ export default function PersistentDrawerLeft({
               boxSizing: "border-box",
               backgroundColor: "#1E1F23",
               color: "white",
+              alignItems: "center",
               "@media (max-width: 767px)": {
                 width: "100%",
               },
@@ -210,26 +211,34 @@ export default function PersistentDrawerLeft({
           anchor="left"
           open={open}
         >
-          <img src="/compass-logo.png" alt="Login Home" style={{}} />
-          <Divider />
-          <List>
-            {["Página inicial", "Meu perfil", "Marketplace", "Sair"].map(
-              (text, index) => (
-                <ListItem
-                  key={text}
-                  disablePadding
-                  sx={{
-                    backgroundColor: selectedItem === text ? "#FE2E05" : "",
-                  }}
-                >
-                  <ListItemButton onClick={() => handleItemClick(text)}>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              )
-            )}
-          </List>
-          <Divider />
+          <img
+            src="/compass-logo.png"
+            alt="Login Home"
+            style={{
+              width: "240px",
+              height: "75.782px",
+            }}
+          />
+
+          <div className={styles.drawerContainer}>
+            <div className={styles.drawerLinksBox}>
+              <Link
+                href="/homepage"
+                className={`${styles.drawerLink} ${styles.activeLink}`}
+              >
+                Página inicial
+              </Link>
+              <Link href="/" className={styles.drawerLink}>
+                Meu Perfil
+              </Link>
+              <Link href="/" className={styles.drawerLink}>
+                Marktplace
+              </Link>
+              <Link href="/" className={styles.drawerLink}>
+                Sair
+              </Link>
+            </div>
+          </div>
         </Drawer>
 
         <Main open={open}>
