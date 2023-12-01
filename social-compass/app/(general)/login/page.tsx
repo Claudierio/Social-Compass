@@ -67,7 +67,7 @@ export default function Login() {
             elevation={0}
             className={styles.main}
             sx={{
-              marginBottom: 20,
+               ginBottom: 20,
               marginRight: 20,
               marginLeft: 20,
               marginTop: 10,

@@ -228,10 +228,10 @@ export default function PersistentDrawerLeft({
               >
                 Página inicial
               </Link>
-              <Link href="/" className={styles.drawerLink}>
+              <Link href="/meuperfil" className={styles.drawerLink}>
                 Meu Perfil
               </Link>
-              <Link href="/" className={styles.drawerLink}>
+              <Link href="/marktplace" className={styles.drawerLink}>
                 Marktplace
               </Link>
               <Link href="/" className={styles.drawerLink}>
@@ -243,7 +243,7 @@ export default function PersistentDrawerLeft({
 
         <Main open={open}>
           <DrawerHeader />
-          <h1>teste</h1>
+
         </Main>
       </Box>
     </header>

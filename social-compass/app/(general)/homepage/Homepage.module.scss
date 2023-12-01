@@ -45,7 +45,7 @@
     border: 1px solid var(--orange, #9e1a00);
     background: var(--gradient-button, linear-gradient(180deg, #AD2D14 0%, #F42E07 100%));
     position: absolute;
-    bottom: 5px;
+    bottom: 8px;
     width: 100px
 }
 
@@ -198,6 +198,14 @@
     align-self: stretch;
     cursor: pointer;
 }
+
+@media (max-width: 767px) {
+    .postInteraction {
+        padding: 0px 0px;
+
+    }
+}
+
 
 .clicked {
     color: var(--yellow, #E9B425);

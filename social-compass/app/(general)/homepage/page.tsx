@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { create } from "zustand";
 import styles from "./Homepage.module.scss";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar";
 import useStore from "../stateZustand";
 import Accordion from "@mui/material/Accordion";
@@ -15,6 +15,9 @@ import Avatar from "@mui/material/Avatar";
 import userAvatar from "/public/icons/user-avatar.png";
 import { Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ChatIcon from "@mui/icons-material/Chat";
+import ShareIcon from "@mui/icons-material/Share";
 
 const HomePage = () => {
   const {
@@ -31,7 +34,21 @@ const HomePage = () => {
     marginLeft: modalOpen ? "350px" : "0",
   };
 
-  const isMobile = window.innerWidth <= 767;
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth <= 767
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const mobileHomePostStyle = {
     width: "110%",
@@ -46,6 +63,7 @@ const HomePage = () => {
 
   const handleLikeClick = () => {
     setLikeClicked(!likeClicked);
+    setLikeCount((prevCount) => prevCount + 1);
   };
 
   const handleCommentClick = () => {
@@ -59,6 +77,8 @@ const HomePage = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
+
+  const [likeCount, setLikeCount] = useState(0);
 
   return (
     <div className={styles.mainContent}>
@@ -186,7 +206,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section>
+      <section style={{ marginTop: "10px" }}>
         <div className={styles.timeline}>
           <Box>
             <section
@@ -238,7 +258,7 @@ const HomePage = () => {
 
                   <div className={styles.postImage}>
                     <img
-                      src="/compass-logo.png"
+                      src="/postExample.png"
                       alt="imagePost"
                       style={{
                         width: "100%",
@@ -257,8 +277,19 @@ const HomePage = () => {
                     }`}
                     onClick={handleLikeClick}
                   >
-                    <span className={styles.likeText} id="likeText">
-                      Curtiu
+                    <span
+                      className={styles.likeText}
+                      id="likeText"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ThumbUpIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Curtiu {likeCount > 0 && `(${likeCount})`}
                     </span>
                     <div className={styles.likesBadge} id="likesBadge">
                       <span
@@ -274,7 +305,19 @@ const HomePage = () => {
                     }`}
                     onClick={handleCommentClick}
                   >
-                    <span className={styles.commentText}>Comentários</span>
+                    <span
+                      className={styles.commentText}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ChatIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Comentários
+                    </span>
                     <div className={styles.commentsBadge}>
                       <span className={styles.commentsNumber}></span>
                     </div>
@@ -286,7 +329,19 @@ const HomePage = () => {
                     }`}
                     onClick={handleShareClick}
                   >
-                    <span className={styles.shareText}>Compartilhar</span>
+                    <span
+                      className={styles.shareText}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ShareIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Compartilhar
+                    </span>
                   </div>
                 </div>
 
@@ -483,8 +538,6 @@ const HomePage = () => {
           </Accordion>
         </div>
       </div>
-
-      
     </div>
   );
 };
