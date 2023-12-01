@@ -1,0 +1,60 @@
+/* TIMELINE */
+
+.timelinePost {
+    display: flex;
+    background: #1E1F23;
+    justify-content: flex-start;
+    position: absolute;
+    padding: 16px;
+    border: 2px solid #2E2F36;
+    border-radius: 16px;
+    width: 75%;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.postInfo {
+    display: flex;
+    flex-direction: column;
+    color: #2E2F36;
+}
+
+/* Buttons */
+
+.postInteraction {
+    display: flex;
+    height: 35px;
+    padding: 10px 48px;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+    cursor: pointer;
+}
+
+.clicked {
+    color: var(--yellow, #E9B425);
+}
+
+/* COMMENTS */
+
+.everyComments {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 16px;
+}
+
+.seeAllComments {
+    text-align: center;
+
+    .seeAllCommentsText {
+        color: #E9B425;
+        font-family: Poppins;
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+
+
