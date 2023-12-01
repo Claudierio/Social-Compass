@@ -5,3 +5,9 @@
     overflow: hidden;
 }
 
+@media (max-width: 767px) {
+    .MuiDrawer-paper {
+      width: 100%;
+    }
+  }
+

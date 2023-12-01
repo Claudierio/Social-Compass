@@ -175,3 +175,9 @@
 .avatarContainer input {
     width: 900%;
 }
+
+@media (max-width: 767px) {
+    .accordions {
+      display: none;
+    }
+  }

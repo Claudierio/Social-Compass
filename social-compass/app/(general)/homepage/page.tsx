@@ -24,6 +24,11 @@ const HomePage = () => {
     setModalOpen,
   } = useStore();
 
+  const homePostStyle = {
+    width: modalOpen ? "calc(75% - 240px)" : "75%",
+    marginLeft: modalOpen ? "240px" : "0",
+  };
+
   const [inputValue, setInputValue] = useState("No que você está pensando?");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +38,6 @@ const HomePage = () => {
   return (
     <div
       className={styles.mainContent}
-      style={{ marginLeft: modalOpen ? "240px" : "0" }}
     >
       <Navbar
         open={open}
@@ -44,9 +48,9 @@ const HomePage = () => {
         setModalOpen={setModalOpen}
       />
 
-      <section className={styles.homePost}>
+      <section className={styles.homePost} style={homePostStyle}>
         <div className={styles.container}>
-          <div className={styles.avatarContainer}>
+          <div className={styles.avatarContainer} >
             <Avatar
               alt="Avatar"
               src={userAvatar.src}
@@ -149,12 +153,10 @@ const HomePage = () => {
           </svg>
 
           <div className={styles.buttonPost}>
-          <button type="submit" className={styles.containerButton}>
-            Postar
-          </button>
-
+            <button type="submit" className={styles.containerButton}>
+              Postar
+            </button>
           </div>
-
         </div>
       </section>
 
@@ -166,7 +168,7 @@ const HomePage = () => {
               borderRadius: "16px",
               border: "2px solid var(--gray-gray-600, #2E2F36)",
               background: "var(--gray-gray-700, #1E1F23)",
-              display: "block"
+              display: "block",
             }}
           >
             <AccordionSummary

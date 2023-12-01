@@ -191,6 +191,7 @@ export default function PersistentDrawerLeft({
             </div>
           </Toolbar>
         </AppBar>
+
         <Drawer
           sx={{
             width: drawerWidth,
@@ -200,6 +201,9 @@ export default function PersistentDrawerLeft({
               boxSizing: "border-box",
               backgroundColor: "#1E1F23",
               color: "white",
+              "@media (max-width: 767px)": {
+                width: "100%",
+              },
             },
           }}
           variant="persistent"
