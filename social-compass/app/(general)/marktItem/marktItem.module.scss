@@ -1,0 +1,75 @@
+/* .main {
+    background-color: #17181c;
+}
+ */
+.itemDetails {
+    text-align: center;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+    align-items: center;
+    margin: auto;
+    padding: auto;
+}
+
+.pageTitle {
+    color: #fff;
+    text-align: center;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 56px;
+    letter-spacing: -0.96px;
+    margin-top: 36px;
+}
+
+.infos {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    margin: auto;
+}
+
+.imageContainer {
+    margin: 20px 0;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+.itemInfo {
+    text-align: left;
+}
+
+.itemTitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.itemDescription {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.itemPrice {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFA500;
+}
+
+.buttonContainer {
+    background-color: #FE2E05;
+}
+
+@media (max-width: 767px) {
+    .buttonContainer {
+        z-index: 0;
+        margin-top: auto;
+        position: relative;
+        margin-top: 5%;
+    }
+}

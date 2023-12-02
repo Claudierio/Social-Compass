@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
 import styles from "./marktplace.module.scss";
 import { Button, Typography, Grid } from "@mui/material";
+import Navbar from "../../components/navbar";
+import useStore from "../stateZustand";
+import Link from "next/link";
 
 const products = [
   {
@@ -54,9 +59,23 @@ const products = [
 ];
 
 const Marketplace = () => {
+  const {
+    open,
+    selectedItem,
+    modalOpen,
+    setOpen,
+    setSelectedItem,
+    setModalOpen,
+  } = useStore();
+
+  const homePostStyle = {
+    width: modalOpen ? "calc(75% - 350px)" : "75%",
+    marginLeft: modalOpen ? "350px" : "0",
+  };
+
   return (
     <div className={styles.main}>
-      <div className={styles.headerMarket} style={{margin: '16px'}}>
+      <div className={styles.headerMarket} style={{ margin: "16px" }}>
         <div className={styles.headerText}>
           <Typography
             style={{
@@ -69,7 +88,7 @@ const Marketplace = () => {
               lineHeight: "24px",
               letterSpacing: "1.12px",
               textTransform: "uppercase",
-              margin: 0, 
+              margin: 0,
             }}
           >
             Todos os itens
@@ -92,14 +111,14 @@ const Marketplace = () => {
           </Typography>
         </div>
         <div className={styles.buttonContainer}>
-        <Button
-          type="submit"
-          variant="contained"
-          className={`${styles.buttonRegister} ${styles.addButtonMargin}`}
-        >
-          Adicionar item
-        </Button>
-      </div>
+          <Button
+            type="submit"
+            variant="contained"
+            className={`${styles.buttonRegister} ${styles.addButtonMargin}`}
+          >
+            Adicionar item
+          </Button>
+        </div>
       </div>
 
       <div className={styles.contentMarket} style={{ marginTop: "36px" }}>
@@ -120,22 +139,22 @@ const Marketplace = () => {
                     fontFamily: "Inter",
                     fontSize: "16px",
                     fontWeight: 500,
-                    textAlign: "left", 
+                    textAlign: "left",
                   }}
                 >
                   {product.title}
                 </Typography>
                 <Typography
                   style={{
-                    marginTop: '5px',
+                    marginTop: "5px",
                     fontSize: "14px",
                     fontStyle: "normal",
                     fontWeight: "400",
                     lineHeight: "24px",
                     letterSpacing: "-0.14px",
-                    color: "var(--gray-gray-200, #A1A3A7)", 
-                    marginBottom: "8px", 
-                    textAlign: "left", 
+                    color: "var(--gray-gray-200, #A1A3A7)",
+                    marginBottom: "8px",
+                    textAlign: "left",
                   }}
                 >
                   {product.description}
@@ -146,9 +165,9 @@ const Marketplace = () => {
                     fontStyle: "normal",
                     fontWeight: "400",
                     letterSpacing: "-0.14px",
-                    color: "var(--gray-gray-200, #A1A3A7)", 
-                    marginBottom: "8px", 
-                    textAlign: "left", 
+                    color: "var(--gray-gray-200, #A1A3A7)",
+                    marginBottom: "8px",
+                    textAlign: "left",
                   }}
                 >
                   R$ 300,00
@@ -165,11 +184,14 @@ const Marketplace = () => {
                     fontWeight: "400",
                     lineHeight: "24px",
                     color: "var(--white, #F5F5F5)",
-                    cursor: 'pointer'
+                    cursor: "pointer",
                   }}
                 >
                   {product.status}
                 </Typography>
+                <Link href="/marktItem" className={styles.drawerLink}>
+                  Meu Perfil
+                </Link>
               </div>
             </Grid>
           ))}
