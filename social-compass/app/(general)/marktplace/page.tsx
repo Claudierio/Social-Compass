@@ -69,7 +69,7 @@ const Marketplace = () => {
               lineHeight: "24px",
               letterSpacing: "1.12px",
               textTransform: "uppercase",
-              margin: 0, // Remova a margem fixa
+              margin: 0, 
             }}
           >
             Todos os itens
@@ -85,7 +85,7 @@ const Marketplace = () => {
               fontWeight: 700,
               lineHeight: "56px",
               letterSpacing: "-0.96px",
-              margin: 0, // Remova a margem fixa
+              margin: 0,
             }}
           >
             Marketplace
@@ -120,7 +120,7 @@ const Marketplace = () => {
                     fontFamily: "Inter",
                     fontSize: "16px",
                     fontWeight: 500,
-                    textAlign: "left", // Align text to the left
+                    textAlign: "left", 
                   }}
                 >
                   {product.title}
@@ -133,9 +133,9 @@ const Marketplace = () => {
                     fontWeight: "400",
                     lineHeight: "24px",
                     letterSpacing: "-0.14px",
-                    color: "var(--gray-gray-200, #A1A3A7)", // Added color style
-                    marginBottom: "8px", // Added margin for spacing
-                    textAlign: "left", // Align text to the left
+                    color: "var(--gray-gray-200, #A1A3A7)", 
+                    marginBottom: "8px", 
+                    textAlign: "left", 
                   }}
                 >
                   {product.description}
@@ -146,9 +146,9 @@ const Marketplace = () => {
                     fontStyle: "normal",
                     fontWeight: "400",
                     letterSpacing: "-0.14px",
-                    color: "var(--gray-gray-200, #A1A3A7)", // Added color style
-                    marginBottom: "8px", // Added margin for spacing
-                    textAlign: "left", // Align text to the left
+                    color: "var(--gray-gray-200, #A1A3A7)", 
+                    marginBottom: "8px", 
+                    textAlign: "left", 
                   }}
                 >
                   R$ 300,00
@@ -164,7 +164,7 @@ const Marketplace = () => {
                     fontSize: "14px",
                     fontWeight: "400",
                     lineHeight: "24px",
-                    color: "var(--white, #F5F5F5)", // Set text color as needed
+                    color: "var(--white, #F5F5F5)",
                     cursor: 'pointer'
                   }}
                 >

@@ -127,6 +127,10 @@ export default function PersistentDrawerLeft({
                     height: "50px",
                     cursor: "pointer",
                     marginRight: "16px",
+                    ...(window.innerWidth <= 767 && {
+                      width: "40px",
+                      height: "40px",
+                    }),
                   }}
                   onClick={handleDrawerOpen}
                 />
@@ -148,7 +152,16 @@ export default function PersistentDrawerLeft({
                 )}
               </DrawerHeader>
 
-              <Typography variant="h6" noWrap component="div">
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  "@media (max-width: 767px)": {
+                    display: "none",
+                  },
+                }}
+              >
                 Social Compass
               </Typography>
             </div>
@@ -162,6 +175,10 @@ export default function PersistentDrawerLeft({
                   height: "35px",
                   filter: "invert(100%)",
                   marginRight: "5px",
+                  ...(window.innerWidth <= 767 && {
+                    width: "30px",
+                    height: "30px",
+                  }),
                 }}
               />
               <img
@@ -172,6 +189,10 @@ export default function PersistentDrawerLeft({
                   height: "35px",
                   filter: "invert(100%)",
                   marginRight: "5px",
+                  ...(window.innerWidth <= 767 && {
+                    width: "30px",
+                    height: "30px",
+                  }),
                 }}
               />
 
@@ -185,8 +206,12 @@ export default function PersistentDrawerLeft({
                 alt="Remy Sharp"
                 src={userAvatar.src}
                 style={{
-                  width: "55px",
-                  height: "55px",
+                  width: "50px",
+                  height: "50px",
+                  ...(window.innerWidth <= 767 && {
+                    width: "40px",
+                    height: "40px",
+                  }),
                 }}
               />
             </div>
@@ -204,6 +229,7 @@ export default function PersistentDrawerLeft({
               alignItems: "center",
               "@media (max-width: 767px)": {
                 width: "100%",
+                marginLeft: "-6%",
               },
             },
           }}
@@ -243,7 +269,6 @@ export default function PersistentDrawerLeft({
 
         <Main open={open}>
           <DrawerHeader />
-
         </Main>
       </Box>
     </header>
