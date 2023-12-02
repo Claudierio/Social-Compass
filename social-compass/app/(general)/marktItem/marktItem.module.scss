@@ -61,9 +61,7 @@
     color: #FFA500;
 }
 
-.buttonContainer {
-    background-color: #FE2E05;
-}
+
 
 @media (max-width: 767px) {
     .buttonContainer {
@@ -73,3 +71,46 @@
         margin-top: 5%;
     }
 }
+
+
+.buttonContainer {
+    display: flex;
+}
+
+.buttonRegister {
+    display: flex;
+    padding: 16px 24px;
+    align-items: flex-start;
+    border-radius: 46px;
+    border: 1px solid var(--orange, #FE2E05);
+    background: var(--gradient-button, linear-gradient(180deg, #AD2D14 0%, #F42E07 100%));
+}
+
+.addButtonMargin {
+    margin: 30px 0px;
+}
+
+.avatarContainer {
+    display: flex;
+}
+
+.postDate{
+    display: flex;
+}
+
+.timerIcon{
+    margin-top: 3px;
+    margin-right: 6px;
+}
+
+.options{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Adicione estas linhas ao seu arquivo de estilos */
+.customMenu {
+    width: 240px;
+    color: white;
+  }
+  
