@@ -17,6 +17,7 @@ import {
   Paper,
   InputAdornment,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -29,17 +30,67 @@ export default function Login() {
   const [email, setEmail] = useState("");
 
   const [date, setDate] = useState("");
+  const router = useRouter()
   //const [labelVisible, setLabelVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
   };
 
+  const applyDateMask = (value: string) => {
+    let cleanValue = value.replace(/\D/g, "");
+
+    let day = cleanValue.slice(0, 2);
+    let month = cleanValue.slice(2, 4);
+    let year = cleanValue.slice(4, 8);
+
+    if (day.length === 2) {
+      const dayNum = parseInt(day, 10);
+      if (dayNum < 1 ||  dayNum > 31) {
+        day = "31";
+      }
+    }
+
+    if (month.length === 2) {
+      const monthNum = parseInt(month, 10);
+      if (monthNum < 1 || monthNum > 12) {
+        month = "12";
+      }
+    }
+
+    if (year.length === 4) {
+      const yearNum = parseInt(year, 10);
+      if (yearNum < 1900) {
+        year = "1900";
+      } else if (yearNum > 2023) {
+        year = "2023";
+      }
+    }
+
+    cleanValue = [day, month, year].filter(Boolean).join("/");
+    return cleanValue;
+  };
+
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let isValid = true;
 
-    setErrors({ username: "", password: "" });
+    setErrors({
+
+      username: "",
+      password: "",
+    });
+
+    /* Validações para a senha */
+
+    if (!password || !confirmPassword) {
+      setErrors((errors) => ({
+        ...errors,
+        password: "Senha é obrigatório.",
+        confirmPassword: "Confirmar a senha é obrigatório.",
+      }));
+      isValid = false;
+    }
 
     if (password.length < 6 || password.length > 50) {
       setErrors((errors) => ({
@@ -49,24 +100,126 @@ export default function Login() {
       isValid = false;
     }
 
-    if (username.length > 255) {
+    /* Validações para a confirmação da senha */
+    if (confirmPassword !== password) {
       setErrors((errors) => ({
         ...errors,
-        username: "Usuário não pode ter mais de 255 caracteres.",
+        password: " ",
+        confirmPassword: "As senhas não correspondem.",
       }));
       isValid = false;
     }
 
-    if (isValid) {
-      const isUnique = await checkUsernameUnique(username);
-      if (!isUnique) {
-        setErrors((errors) => ({ ...errors, username: "Usuário já existe." }));
+    /* Validações para o usuário */
+
+    if (username.length > 255) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Usuário não pode ter mais de 255 caracteres. ",
+      }));
+      isValid = false;
+    } else if (!username) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Usuário é obrigatório. ",
+      }));
+      isValid = false;
+    }
+
+    /* Validações para o nome */
+
+    if (user.length > 255) {
+      setErrors((errors) => ({
+        ...errors,
+        nome: "Nome não pode ter mais de 255 caracteres. ",
+      }));
+      isValid = false;
+    }
+
+    if (!user) {
+      setErrors((errors) => ({
+        ...errors,
+        nome: "Nome é obrigatório. ",
+      }));
+      isValid = false;
+    }
+
+    /* Validações para o email */
+    if (email.length === 0) {
+      setErrors((errors) => ({ ...errors, email: "E-mail é obrigatório." }));
+      isValid = false;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      setErrors((errors) => ({
+        ...errors,
+        email: "Por favor, insira um e-mail válido.",
+      }));
+      isValid = false;
+    } 
+
+    /* Validações para a data de nascimento */
+    let formattedDate = "";
+    if (!date) {
+      setErrors((errors) => ({
+        ...errors,
+        nascimento: "Data de Nascimento é obrigatória.",
+      }));
+      isValid = false;
+    } else {
+      const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = date.match(dateRegex);
+
+      if (!match) {
+        setErrors((errors) => ({
+          ...errors,
+          nascimento:
+            "Por favor, insira uma data válida no formato dd/mm/aaaa.",
+        }));
         isValid = false;
+      } else {
+        const [, day, month, year] = match;
+
+        formattedDate = `${year}-${month}-${day}`;
       }
     }
 
     if (isValid) {
-      console.log(username, password);
+      try {
+        const response = await fetch("http://localhost:3001/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+
+            "User-Agent": "PostmanRuntime/7.35.0",
+            Accept: "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            Connection: "keep-alive",
+          },
+          body: JSON.stringify({
+            name: user,
+            username,
+            birthdate: formattedDate,
+            email,
+            password,
+            confirmPassword,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const token = data.token;
+          const userId = data.user.id;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("id", userId);
+          router.push("/homepage");
+        } else {
+          console.error("Registro Falhou");
+        }
+      } catch (error) {
+        console.error("Ocorreu um erro:", error);
+      }
+      console.log(formattedDate);
     }
   };
 
@@ -83,12 +236,16 @@ export default function Login() {
             elevation={0}
             className={styles.main}
             sx={{
-              marginBottom: 20,
-              marginRight: 20,
-              marginLeft: 20,
-              marginTop: 10,
-              padding: 3,
-              maxWidth: 400,
+              marginBottom: { xs: "160px", sm: "20px" },
+              marginRight: { xs: "160px", sm: "20px" },
+              marginLeft: { xs: "-20px", sm: "260px" },
+              marginTop: { xs: "-10px", sm: "60px" },
+              padding: { xs: "24px", sm: "3" },
+              maxWidth: { xs: "342px", sm: "400px" },
+              color: "white",
+              width: "100vw",
+              height: "100vh",
+              overflow: "hidden",
             }}
           >
             <Typography variant="h2" gutterBottom>
@@ -166,7 +323,7 @@ export default function Login() {
               <TextField
                 label={"Nascimento"}
                 value={date}
-                onChange={handleInputChange}
+                onChange={(e) => setDate(applyDateMask(e.target.value))}
                 type="nascimento"
                 fullWidth
                 margin="normal"
@@ -196,7 +353,7 @@ export default function Login() {
                 InputLabelProps={{ style: { color: "#757575" } }}
               />
               <TextField
-                label="email"
+                label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
@@ -302,13 +459,14 @@ export default function Login() {
                   style: { color: errors.password ? "#E9B425" : "#757575" },
                 }}
               />
+
               <Button
                 type="submit"
                 variant="contained"
                 className={styles.buttonRegister}
                 fullWidth
               >
-                Entrar
+                Registrar-se
               </Button>
 
               <div className={styles.parentContainer}>

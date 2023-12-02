@@ -13,11 +13,13 @@ import {
   Paper,
   InputAdornment,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
+  const router = useRouter()
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,6 +53,41 @@ export default function Login() {
 
     if (isValid) {
       console.log(username, password);
+      try {
+        const response = await fetch("http://localhost:3001/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+            "User-Agent": "PostmanRuntime/7.35.0",
+            Accept: "/",
+            "Accept-Encoding": "gzip, deflate, br",
+            Connection: "keep-alive",
+            Origin: "http://localhost:3000/",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (response.ok) {
+          /* Setando o token */
+          const data = await response.json();
+          const token = data.token;
+          const userId = data.user.id;
+          localStorage.setItem("token", token);
+          localStorage.setItem("id", userId);
+          router.push("/homepage");
+        } else {
+          setErrors((errors) => ({
+            ...errors,
+            username: " ",
+            password:
+              "Usuário e/ou Senha inválidos.\nPor favor, tente novamente!",
+          }));
+          isValid = false;
+        }
+      } catch (error) {
+        console.error("Ocorreu um erro: ", error);
+      }
     }
   };
 
@@ -67,12 +104,16 @@ export default function Login() {
             elevation={0}
             className={styles.main}
             sx={{
-               ginBottom: 20,
-              marginRight: 20,
-              marginLeft: 20,
-              marginTop: 10,
-              padding: 3,
-              maxWidth: 400,
+              marginBottom: { xs: "160px", sm: "20px" },
+              marginRight: { xs: "160px", sm: "20px" },
+              marginLeft: { xs: "-20px", sm: "220px" },
+              marginTop: { xs: "120px", sm: "140px" },
+              padding: { xs: "24px", sm: "3" },
+              maxWidth: { xs: "342px", sm: "400px" },
+              color: "white",
+              width: "100vw",
+              height: "100vh",
+              overflow: "hidden",
             }}
           >
             <Typography variant="h2" gutterBottom>
