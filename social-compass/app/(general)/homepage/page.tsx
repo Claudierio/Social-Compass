@@ -262,7 +262,6 @@ const HomePage = () => {
                       alt="imagePost"
                       style={{
                         width: "100%",
-                        maxWidth: "100vh",
                         margin: 0,
                         padding: 0,
                       }}
