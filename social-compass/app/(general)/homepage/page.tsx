@@ -41,7 +41,12 @@ const HomePage = () => {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" && window.innerWidth <= 767
   );
-  
+
+  const focusedStyle = {
+    border: "0.8px solid gray",
+    padding: "9.6px 14.4px",
+  };
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,9 +59,6 @@ const HomePage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-
-  const [inputValue, setInputValue] = useState("No que você está pensando?");
 
   const [likeClicked, setLikeClicked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
@@ -75,11 +77,29 @@ const HomePage = () => {
     setShareClicked(!shareClicked);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const [showSecondInput, setShowSecondInput] = useState(false);
+  const [showThirdInput, setShowThirdInput] = useState(false);
+
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState({
+    photo: false,
+    map: false,
+  });
+
+  const handlePhotoClick = () => {
+    setShowAdditionalInputs((prev) => ({
+      ...prev,
+      photo: !prev.photo,
+    }));
   };
 
-  const [likeCount, setLikeCount] = useState(0);
+  const handleMapClick = () => {
+    setShowAdditionalInputs((prev) => ({
+      ...prev,
+      map: !prev.map,
+    }));
+  };
 
   return (
     <Card
@@ -114,12 +134,67 @@ const HomePage = () => {
                 }}
               />
               <input
+                style={{
+                  fontFamily: "MontSerrat",
+                  background: "transparent",
+                  border: "1px solid gray",
+                  color: "white",
+                  padding: "10px 15px",
+                  outline: "none",
+                  ...(isFocused && focusedStyle),
+                }}
                 type="text"
-                value={inputValue}
-                onChange={handleChange}
-                className={styles.textBox}
+                name="text"
+                className={styles.inputPost}
+                placeholder="No que você está pensando?"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
               />
             </div>
+            {showAdditionalInputs.photo && (
+              <input
+                style={{
+                  fontFamily: "MontSerrat",
+                  background: "transparent",
+                  border: "1px solid gray",
+                  color: "white",
+                  padding: "10px 15px",
+                  outline: "none",
+                  width: "100%",
+                  ...(isFocused && focusedStyle),
+                  marginTop: "10px", 
+                }}
+                type="text"
+                name="text"
+                className={styles.inputPost}
+                placeholder="Escreva a URL da sua imagem aqui"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+            )}
+
+            {showAdditionalInputs.map && (
+              <input
+                style={{
+                  fontFamily: "MontSerrat",
+                  background: "transparent",
+                  border: "1px solid gray",
+                  color: "white",
+                  padding: "10px 15px",
+                  outline: "none",
+                  width: "100%",
+                  ...(isFocused && focusedStyle),
+                  marginTop: "10px", // Ajuste aqui para a margem inferior
+                }}
+                type="text"
+                name="text"
+                className={styles.inputPost}
+                placeholder="Onde você está?"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+            )}
+
             <svg
               className={styles.faPhoto}
               xmlns="http://www.w3.org/2000/svg"
@@ -143,6 +218,7 @@ const HomePage = () => {
 
             <svg
               className={styles.faImg}
+              onClick={handlePhotoClick}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -175,6 +251,7 @@ const HomePage = () => {
 
             <svg
               className={styles.faMap}
+              onClick={handleMapClick}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -373,10 +450,21 @@ const HomePage = () => {
                         }}
                       />
                       <input
+                        style={{
+                          fontFamily: "MontSerrat",
+                          background: "transparent",
+                          border: "1px solid gray",
+                          color: "white",
+                          padding: "10px 15px",
+                          outline: "none",
+                          ...(isFocused && focusedStyle),
+                        }}
                         type="text"
-                        value={inputValue}
-                        onChange={handleChange}
-                        className={styles.textBox}
+                        name="text"
+                        className={styles.inputPost}
+                        placeholder="No que você está pensando?"
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
                       />
                     </div>
 
@@ -386,7 +474,9 @@ const HomePage = () => {
                       </span>
                     </div>
 
-                    <Divider style={{ marginTop: "16px" }} />
+                    <Divider
+                      style={{ marginTop: "16px", background: "#A1A3A7" }}
+                    />
 
                     <div className={styles.seeAllComments}>
                       <p
@@ -412,13 +502,17 @@ const HomePage = () => {
                 border: "2px solid var(--gray-gray-600, #2E2F36)",
                 background: "var(--gray-gray-700, #1E1F23)",
                 display: "block",
-                color: "white"
+                color: "white",
               }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon sx={{
-                  color: "white"
-                }}/>}
+                expandIcon={
+                  <ExpandMoreIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                }
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
@@ -455,9 +549,13 @@ const HomePage = () => {
               }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon sx={{
-                  color: "white"
-                }}/>}
+                expandIcon={
+                  <ExpandMoreIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                }
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >

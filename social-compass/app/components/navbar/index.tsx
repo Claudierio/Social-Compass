@@ -165,9 +165,9 @@ export default function PersistentDrawerLeft({
                 src={global.src}
                 alt="Global Icon"
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  marginRight: "5px",
+                  width: "26px",
+                  height: "26px",
+                  marginRight: "18px",
                   ...(window.innerWidth <= 767 && {
                     width: "25px",
                     height: "25px",
@@ -178,8 +178,8 @@ export default function PersistentDrawerLeft({
                 src={bell.src}
                 alt="Bell Icon"
                 style={{
-                  width: "28px",
-                  height: "28px",
+                  width: "26px",
+                  height: "26px",
                   color: "#fff",
                   marginRight: "5px",
                   ...(window.innerWidth <= 767 && {
@@ -247,11 +247,11 @@ export default function PersistentDrawerLeft({
               >
                 Página inicial
               </Link>
-              <Link href="/meuperfil" className={styles.drawerLink}>
+              <Link href="/profile" className={styles.drawerLink}>
                 Meu Perfil
               </Link>
-              <Link href="/marktplace" className={styles.drawerLink}>
-                Marktplace
+              <Link href="/marketplace" className={styles.drawerLink}>
+                Marketplace
               </Link>
               <Link href="/" className={styles.drawerLink}>
                 Sair

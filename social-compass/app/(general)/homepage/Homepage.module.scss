@@ -19,16 +19,14 @@
     display: flex;
     background: #1E1F23;
     justify-content: flex-start;
-
     padding: 16px;
     border: 2px solid #2E2F36;
     border-radius: 16px;
     width: 75%;
-    height: 120px;
+    height: auto;
     flex: none;
     order: 0;
     flex-grow: 0;
-
 }
 
 .buttonPost {
@@ -86,6 +84,7 @@
     width: 20px;
     height: 60px;
     background-color: #1E1F23;
+    cursor: pointer;
 }
 
 
@@ -255,4 +254,15 @@
         font-size: 14px;
         font-weight: 500;
     }
+}
+
+.inputPost {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 24px;
+    height: 37px;
+    border-radius: 46px;
+    border-color: #757575 !important;
+    border-radius: 35px !important;
 }

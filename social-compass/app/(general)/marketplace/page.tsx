@@ -74,13 +74,12 @@ const Marketplace = () => {
   };
 
   return (
-    <Card 
-    style={{
-      background: "#17181c",
-      marginTop: "-40px",
-      paddingTop: "30px"
-
-    }}
+    <Card
+      style={{
+        background: "#17181c",
+        marginTop: "-40px",
+        paddingTop: "30px",
+      }}
     >
       <div className={styles.main}>
         <div className={styles.headerMarket} style={{ margin: "16px" }}>
@@ -184,7 +183,7 @@ const Marketplace = () => {
                     R$ 300,00
                   </Typography>
 
-                  <Typography
+                  <Link
                     style={{
                       width: "150px",
                       borderRadius: "24px",
@@ -196,12 +195,12 @@ const Marketplace = () => {
                       lineHeight: "24px",
                       color: "var(--white, #F5F5F5)",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      marginRight: "42%"
                     }}
+                    href="/marketItem"
                   >
                     {product.status}
-                  </Typography>
-                  <Link href="/marktItem" className={styles.drawerLink}>
-                    Meu Perfil
                   </Link>
                 </div>
               </Grid>
