@@ -221,8 +221,7 @@ export default function PersistentDrawerLeft({
               color: "white",
               alignItems: "center",
               "@media (max-width: 767px)": {
-                width: "110%",
-                marginLeft: "-6%",
+                width: "100%",
               },
             },
           }}

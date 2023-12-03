@@ -257,7 +257,7 @@ export default function Login() {
               variant="subtitle1"
               sx={{ marginLeft: 0.3, fontSize: 27 }}
             >
-              Login
+              Registre-se
             </Typography>
             <form onSubmit={handleRegister}>
               <TextField

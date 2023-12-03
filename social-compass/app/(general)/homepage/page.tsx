@@ -33,8 +33,9 @@ const HomePage = () => {
     width: modalOpen ? "calc(80% - 350px)" : "80%",
     marginLeft: modalOpen ? "350px" : "0",
   };
+
   const mobileHomePostStyle = {
-    width: "110%",
+    width: "100%",
     marginLeft: "-4%",
   };
 

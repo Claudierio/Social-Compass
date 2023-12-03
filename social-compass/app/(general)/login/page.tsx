@@ -19,11 +19,16 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
-  const router = useRouter()
+  const router = useRouter();
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let isValid = true;
+
+    const checkUsernameUnique = async (username: string) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return true;
+    };
 
     setErrors({ username: "", password: "" });
 
@@ -69,7 +74,6 @@ export default function Login() {
         });
 
         if (response.ok) {
-          /* Setando o token */
           const data = await response.json();
           const token = data.token;
           const userId = data.user.id;
@@ -81,7 +85,9 @@ export default function Login() {
             ...errors,
             username: " ",
             password:
-              "Usuário e/ou Senha inválidos.\nPor favor, tente novamente!",
+              "Usuário e/ou Senha inválidos." +
+              "\n" +
+              "Por favor, tente novamente!",
           }));
           isValid = false;
         }
@@ -89,11 +95,6 @@ export default function Login() {
         console.error("Ocorreu um erro: ", error);
       }
     }
-  };
-
-  const checkUsernameUnique = async (username: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return true;
   };
 
   return (
@@ -153,7 +154,10 @@ export default function Login() {
                   ),
                   style: { color: "#FFFFFF" },
                   classes: {
-                    notchedOutline: styles.whiteBorder,
+                    root: errors.password && styles.errorBorder,
+                    notchedOutline: errors.password
+                      ? styles.errorBorder
+                      : styles.whiteBorder,
                   },
                 }}
                 InputLabelProps={{ style: { color: "#757575" } }}
@@ -178,11 +182,12 @@ export default function Login() {
                           width: "20px",
                           height: "20px",
                           filter: "invert(100%)",
+                          color: "white",
                         }}
                       />
                     </InputAdornment>
                   ),
-                  style: { color: "#FFFFFF" },
+                  style: { color: "#FFF" },
                   classes: {
                     root: errors.password && styles.errorBorder,
                     notchedOutline: errors.password
@@ -215,9 +220,9 @@ export default function Login() {
                 </span>
               </div>
               <div>
-              <Link className={styles.loginLink} href="/homepage">
-                    <span>Home</span>
-                  </Link>
+                <Link className={styles.loginLink} href="/homepage">
+                  <span>Home</span>
+                </Link>
               </div>
             </form>
           </Paper>
