@@ -30,7 +30,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
 
   const [date, setDate] = useState("");
-  const router = useRouter()
+  const router = useRouter();
   //const [labelVisible, setLabelVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ export default function Login() {
 
     if (day.length === 2) {
       const dayNum = parseInt(day, 10);
-      if (dayNum < 1 ||  dayNum > 31) {
+      if (dayNum < 1 || dayNum > 31) {
         day = "31";
       }
     }
@@ -76,7 +76,6 @@ export default function Login() {
     let isValid = true;
 
     setErrors({
-
       username: "",
       password: "",
     });
@@ -154,7 +153,7 @@ export default function Login() {
         email: "Por favor, insira um e-mail válido.",
       }));
       isValid = false;
-    } 
+    }
 
     /* Validações para a data de nascimento */
     let formattedDate = "";

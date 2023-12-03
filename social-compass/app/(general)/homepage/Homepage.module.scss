@@ -19,7 +19,7 @@
     display: flex;
     background: #1E1F23;
     justify-content: flex-start;
-   
+
     padding: 16px;
     border: 2px solid #2E2F36;
     border-radius: 16px;
@@ -32,13 +32,15 @@
 }
 
 .buttonPost {
-    position: relative; 
+    position: relative;
     display: flex;
     justify-content: flex-end;
     margin-top: auto;
 }
 
 .containerButton {
+    color: #F5F5F5;
+    font-weight: 600;
     padding: 15px 24px;
     align-items: flex-start;
     border-radius: 46px;
@@ -51,17 +53,21 @@
 
 
 .accordions {
+    color: #FFF;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     right: 2%;
-    top: 10%; /* Add this line */
-    position: fixed; /* Add this line */
+    top: 10%;
+    /* Add this line */
+    position: fixed;
+    /* Add this line */
     z-index: 1;
 }
 
 .mainContent {
     padding: 0px 36px;
+    height: 100%;
 }
 
 
@@ -124,6 +130,10 @@
     display: flex;
 }
 
+.avatarContainer input {
+    color: #75767D;
+}
+
 
 .textBox {
     display: flex;
@@ -167,11 +177,18 @@
 
 /* TIMELINE */
 
+@media (max-width: 767px) {
+    .timeline {
+        margin-bottom: 100%;
+
+    }
+}
+
 .timelinePost {
     display: flex;
     background: #1E1F23;
     justify-content: flex-start;
- 
+
     padding: 16px;
     border: 2px solid #2E2F36;
     border-radius: 16px;
@@ -187,6 +204,11 @@
     color: #2E2F36;
 }
 
+.postDescription {
+    color: white;
+    margin-top: 16px;
+}
+
 /* Buttons */
 
 .postInteraction {
@@ -197,6 +219,7 @@
     align-items: flex-start;
     align-self: stretch;
     cursor: pointer;
+    color: #A1A3A7;
 }
 
 @media (max-width: 767px) {
@@ -215,11 +238,13 @@
 
 .everyComments {
     color: #FFF;
-    font-family: Poppins;
     font-size: 12px;
-    font-weight: 400;
     margin-top: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
+
 
 .seeAllComments {
     text-align: center;

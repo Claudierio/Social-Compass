@@ -30,7 +30,14 @@ const MarktItem = () => {
   };
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main}
+    style={{
+      background: "#17181c",
+      marginTop: "-40px",
+      paddingTop: "30px"
+
+    }}
+    >
       <div className={styles.itemDetails}>
         <Typography variant="h1" className={styles.pageTitle}>
           Detalhes do Item
@@ -65,8 +72,12 @@ const MarktItem = () => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
+              style={{
+                color: "white",
+              }}
             >
-              <MoreHorizIcon />
+              <MoreHorizIcon
+               />
             </IconButton>
             <Menu
               id="basic-menu"
@@ -76,7 +87,7 @@ const MarktItem = () => {
               MenuListProps={{
                 "aria-labelledby": "basic-button",
               }}
-              className={styles.customMenu} 
+              className={styles.customMenu}
             >
               <MenuItem onClick={handleClose}>
                 <svg
@@ -165,7 +176,14 @@ const MarktItem = () => {
               type="submit"
               variant="contained"
               className={`${styles.buttonRegister} ${styles.addButtonMargin}`}
-              style={{}}
+              style={{
+                display: "flex;",
+                padding: "16px 24px",
+                alignItems: "flex-start",
+                borderRadius: "46px",
+                border: "1px solid var(--orange, #FE2E05)",
+                background: "var(--gradient-button, linear-gradient(180deg, #AD2D14 0%, #F42E07 100%))"
+              }}
             >
               Comprar Item
             </Button>
@@ -227,7 +245,7 @@ const MarktItem = () => {
                 }}
               >
                 12 minutos atrás
-              </p>
+              </p>        
             </div>
           </div>
         </div>

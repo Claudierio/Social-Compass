@@ -165,13 +165,12 @@ export default function PersistentDrawerLeft({
                 src={global.src}
                 alt="Global Icon"
                 style={{
-                  width: "35px",
-                  height: "35px",
-                  filter: "invert(100%)",
+                  width: "28px",
+                  height: "28px",
                   marginRight: "5px",
                   ...(window.innerWidth <= 767 && {
-                    width: "30px",
-                    height: "30px",
+                    width: "25px",
+                    height: "25px",
                   }),
                 }}
               />
@@ -179,13 +178,13 @@ export default function PersistentDrawerLeft({
                 src={bell.src}
                 alt="Bell Icon"
                 style={{
-                  width: "35px",
-                  height: "35px",
-                  filter: "invert(100%)",
+                  width: "28px",
+                  height: "28px",
+                  color: "#fff",
                   marginRight: "5px",
                   ...(window.innerWidth <= 767 && {
-                    width: "30px",
-                    height: "30px",
+                    width: "25px",
+                    height: "25px",
                   }),
                 }}
               />
@@ -222,7 +221,7 @@ export default function PersistentDrawerLeft({
               color: "white",
               alignItems: "center",
               "@media (max-width: 767px)": {
-                width: "100%",
+                width: "110%",
                 marginLeft: "-6%",
               },
             },
