@@ -6,6 +6,9 @@ import Navbar from "../../components/navbar";
 import styles from "./profile.module.scss";
 import InfoProfile from "../../components/infoProfile";
 import ModalProfile from "../../components/modalProfile";
+import { styled } from '@mui/material/styles';
+import Badge from '@mui/material/Badge';
+import Stack from '@mui/material/Stack';
 import {
   Card,
   CardMedia,
@@ -49,8 +52,8 @@ const getUserInfo = async () => {
 
 const profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [nome, setNome] = useState("");
-  const [cargo, setCargo] = useState("");
+  const [name, setName] = useState("");
+  const [office, setOffice] = useState("");
   const [avatar, setAvatar] = useState("");
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -85,12 +88,42 @@ const profile = () => {
     }
   }, []);
 
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      backgroundColor: '#44b700',
+      color: '#44b700',
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: 'ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }));
+  
+
   useEffect(() => {
     const fetchData = async () => {
       const userInfo = await getUserInfo();
       if (userInfo) {
-        setNome(userInfo.name);
-        setCargo(userInfo.occupation);
+        setName(userInfo.name);
+        setOffice(userInfo.occupation);
         setAvatar(userInfo.image);
       }
     };
@@ -98,7 +131,7 @@ const profile = () => {
     fetchData();
   }, []);
   return (
-    <div style={{ background: "#1E1F23" }}>
+    <div className={styles.profileMain}>
       <Navbar
         open={open}
         selectedItem={selectedItem}
@@ -142,6 +175,8 @@ const profile = () => {
                 }
                 alt="Capa do perfil"
               />
+
+
               <Avatar
                 alt="Imagem do Perfil"
                 src={avatar}
@@ -154,6 +189,7 @@ const profile = () => {
                   left: isMobile ? 15 : 60,
                 }}
               />
+
               <Box
                 sx={{
                   display: "flex",
@@ -172,8 +208,7 @@ const profile = () => {
 
                     color: "#E9B425",
                     width: isMobile ? "140px" : "30",
-                  }}
-                >
+                  }}>
                   <Typography
                     variant="h4"
                     sx={{
@@ -182,18 +217,16 @@ const profile = () => {
                       width: isMobile ? "100%" : "380%",
 
                       fontSize: isMobile ? 21 : 30,
-                    }}
-                  >
-                    {nome}
+                    }}>
+                    {name}
                   </Typography>
 
                   <Typography
                     variant="subtitle1"
                     sx={{
                       width: isMobile ? "150%" : "250%",
-                    }}
-                  >
-                    {cargo}
+                    }}>
+                    {office}
                   </Typography>
                 </Box>
                 <div>
@@ -220,8 +253,7 @@ const profile = () => {
                     }
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.color = "#FFFFFF")
-                    }
-                  >
+                    }>
                     Editar Perfil
                   </Button>
                   <ModalProfile

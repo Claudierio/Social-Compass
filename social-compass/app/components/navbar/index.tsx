@@ -1,5 +1,6 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,26 +8,30 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import styles from "./Navbar.module.scss";
-import userAvatar from "/public/icons/user-avatar.png";
 import global from "/public/icons/global.png";
 import bell from "/public/icons/bell.png";
 import goArrow from "/public/icons/goArrow.png";
 import backArrow from "/public/icons/backArrow.png";
 import Avatar from "@mui/material/Avatar";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Card, useMediaQuery } from "@mui/material";
+import {
+  styled,
+  useTheme,
+} from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import Stack from "@mui/material/Stack";
 
 const drawerWidth = 350;
-
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  marginLeft: ` -${drawerWidth}px`,
   ...(open && {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
@@ -35,10 +40,6 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     marginLeft: 0,
   }),
 }));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -66,6 +67,39 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}));
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
 interface NavbarProps {
   open: boolean;
   selectedItem: string;
@@ -75,15 +109,66 @@ interface NavbarProps {
   setModalOpen: (value: boolean) => void;
 }
 
-export default function PersistentDrawerLeft({
+const getUserInfo = async () => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
+  if (token && userId) {
+    try {
+      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (error) {
+      console.error("Erro ao obter informações do usuário:", error);
+    }
+  }
+};
+
+export default function NavBar({
   open,
-  selectedItem,
   modalOpen,
   setOpen,
   setSelectedItem,
   setModalOpen,
 }: NavbarProps) {
+  const [nome, setNome] = useState("");
+  const [image, setImage] = useState("");
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo();
+
+      if (userInfo) {
+        setNome(userInfo.name);
+        setImage(userInfo.image);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleItemClick = (path: string, itemName: string) => {
+    if (itemName === "Sair") {
+      localStorage.clear();
+      router.push("/login");
+    } else {
+      setSelectedItem(itemName);
+      setModalOpen(false);
+      setOpen(false);
+      router.push(path);
+    }
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -95,10 +180,6 @@ export default function PersistentDrawerLeft({
     setModalOpen(false);
   };
 
-  const handleItemClick = (text: string) => {
-    setSelectedItem(text);
-  };
-
   return (
     <header className={styles.main}>
       <Box sx={{ display: "flex" }}>
@@ -106,7 +187,7 @@ export default function PersistentDrawerLeft({
         <AppBar position="fixed" open={open}>
           <Toolbar
             sx={{
-              backgroundColor: "#1E1F23",
+              backgroundColor: "#17181c",
               display: "flex",
               justifyContent: "space-between",
             }}
@@ -117,14 +198,10 @@ export default function PersistentDrawerLeft({
                   src={goArrow.src}
                   alt="Abrir menu"
                   style={{
-                    width: "50px",
-                    height: "50px",
+                    width: isMobile ? "30px" : "50px",
+                    height: isMobile ? "30px" : "50px",
                     cursor: "pointer",
                     marginRight: "16px",
-                    ...(window.innerWidth <= 767 && {
-                      width: "40px",
-                      height: "40px",
-                    }),
                   }}
                   onClick={handleDrawerOpen}
                 />
@@ -151,9 +228,11 @@ export default function PersistentDrawerLeft({
                 noWrap
                 component="div"
                 sx={{
+                  fontSize: 16,
                   "@media (max-width: 767px)": {
                     display: "none",
                   },
+                  fontFamily: "MontSerrat",
                 }}
               >
                 Social Compass
@@ -163,55 +242,61 @@ export default function PersistentDrawerLeft({
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
                 src={global.src}
-                alt="Global Icon"
+                alt="Planeta Icon"
                 style={{
-                  width: "26px",
-                  height: "26px",
-                  marginRight: "18px",
-                  ...(window.innerWidth <= 767 && {
-                    width: "25px",
-                    height: "25px",
-                  }),
+                  width: "25px",
+                  height: "25px",
+                  filter: "invert(100%)",
+                  marginRight: "15px",
                 }}
               />
               <img
                 src={bell.src}
-                alt="Bell Icon"
+                alt="Sino Icon"
                 style={{
-                  width: "26px",
-                  height: "26px",
-                  color: "#fff",
-                  marginRight: "5px",
-                  ...(window.innerWidth <= 767 && {
-                    width: "25px",
-                    height: "25px",
-                  }),
+                  width: "25px",
+                  height: "25px",
+                  filter: "invert(100%)",
+                  marginRight: "15px",
                 }}
               />
 
               <Typography
                 variant="body1"
-                sx={{ marginRight: 2, color: "white" }}
-              >
-                Nome do Usuário
-              </Typography>
-              <Avatar
-                alt="Remy Sharp"
-                src={userAvatar.src}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  ...(window.innerWidth <= 767 && {
-                    width: "40px",
-                    height: "40px",
-                  }),
+                sx={{
+                  marginRight: isMobile ? 0.9 : 2,
+                  color: "white",
+                  fontSize: isMobile ? "16px" : "16px",
+                  fontFamily: "MontSerrat",
                 }}
-              />
+              >
+                {nome}
+              </Typography>
+              <Link href="/perfil" passHref>
+                <StyledBadge
+/*                   overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  variant="dot" */
+                >
+                  <Avatar
+                    alt=""
+                    src={image}
+                    style={{
+                      border: "1.5px solid #E9B425",
+                      width: isMobile ? "34px" : "50px",
+                      height: isMobile ? "34px" : "50px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </StyledBadge>
+              </Link>
             </div>
           </Toolbar>
         </AppBar>
         <Drawer
           sx={{
+            display: "flex",
+            justifyContent: "center",
             width: drawerWidth,
             flexShrink: 0,
             "& .MuiDrawer-paper": {
@@ -219,7 +304,6 @@ export default function PersistentDrawerLeft({
               boxSizing: "border-box",
               backgroundColor: "#1E1F23",
               color: "white",
-              alignItems: "center",
               "@media (max-width: 767px)": {
                 width: "100%",
               },
@@ -233,12 +317,16 @@ export default function PersistentDrawerLeft({
             src="/compass-logo.png"
             alt="Login Home"
             style={{
-              width: "240px",
-              height: "75.782px",
+              width: isMobile ? "250px" : "240px",
+              marginLeft: isMobile ? 70 : 55,
             }}
           />
-
-          <div className={styles.drawerContainer}>
+          <div
+            className={styles.drawerContainer}
+            style={{
+              marginLeft: isMobile ? "75px" : " 55px",
+            }}
+          >
             <div className={styles.drawerLinksBox}>
               <Link
                 href="/homepage"

@@ -35,7 +35,7 @@ const HomePage = () => {
   };
 
   const mobileHomePostStyle = {
-    width: "100%",
+    width: "110%",
     marginLeft: "-4%",
   };
 
@@ -102,11 +102,13 @@ const HomePage = () => {
     }));
   };
 
+  
+
   return (
     <Card
       style={{
         background: "#17181c",
-        marginTop: "-24px",
+
       }}
     >
       <div className={styles.mainContent}>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./marktplace.module.scss";
 import { Button, Typography, Grid, Card } from "@mui/material";
 import Navbar from "../../components/navbar";
@@ -69,9 +69,36 @@ const Marketplace = () => {
   } = useStore();
 
   const homePostStyle = {
-    width: modalOpen ? "calc(75% - 350px)" : "75%",
+    width: modalOpen ? "calc(100% - 350px)" : "100%",
     marginLeft: modalOpen ? "350px" : "0",
   };
+
+  const mobileHomePostStyle = {
+    width: "100%",
+    marginLeft: "-4%",
+  };
+
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth <= 767
+  );
+
+  const focusedStyle = {
+    border: "0.8px solid gray",
+    padding: "9.6px 14.4px",
+  };
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <Card
@@ -81,7 +108,16 @@ const Marketplace = () => {
         paddingTop: "30px",
       }}
     >
-      <div className={styles.main}>
+      <Navbar
+        open={open}
+        selectedItem={selectedItem}
+        modalOpen={modalOpen}
+        setOpen={setOpen}
+        setSelectedItem={setSelectedItem}
+        setModalOpen={setModalOpen}
+      />
+
+      <div className={styles.main} style={isMobile ? mobileHomePostStyle : homePostStyle}>
         <div className={styles.headerMarket} style={{ margin: "16px" }}>
           <div className={styles.headerText}>
             <Typography
@@ -111,7 +147,6 @@ const Marketplace = () => {
                 fontWeight: 700,
                 lineHeight: "56px",
                 letterSpacing: "-0.96px",
-                margin: 0,
               }}
             >
               Marketplace
@@ -196,7 +231,7 @@ const Marketplace = () => {
                       color: "var(--white, #F5F5F5)",
                       cursor: "pointer",
                       textDecoration: "none",
-                      marginRight: "42%"
+                      marginRight: "40%",
                     }}
                     href="/marketItem"
                   >
