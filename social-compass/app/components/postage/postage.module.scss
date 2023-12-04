@@ -1,10 +1,88 @@
+.buttonPost {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+@media (max-width: 767px) {
+    .mainContent {
+        margin-right: 0;
+    }
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 24px;
+    margin-left: auto;
+    width: 230px;
+    height: 272px;
+    background: #1E1F23;
+    border: 2px solid #2E2F36;
+    border-radius: 16px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
+.container {
+    text-align: left;
+    background-color: #1E1F23;
+    width: 100%;
+}
+
+
+.menuOpen {
+    width: calc(100% - 240px);
+}
+
+.avatarContainer {
+    display: flex;
+}
+
+.avatarContainer input {
+    color: #75767D;
+}
+
+
+.textBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 24px;
+    height: 37px;
+    border-radius: 46px;
+}
+
+.avatarContainer input {
+    width: 900%;
+}
+
+@media (max-width: 767px) {
+    .homePostStyle {
+        width: 99%;
+
+    }
+}
+
 /* TIMELINE */
+
+@media (max-width: 767px) {
+    .timeline {
+        margin-bottom: 100%;
+
+    }
+}
 
 .timelinePost {
     display: flex;
     background: #1E1F23;
     justify-content: flex-start;
-    position: absolute;
+
     padding: 16px;
     border: 2px solid #2E2F36;
     border-radius: 16px;
@@ -14,10 +92,10 @@
     flex-grow: 0;
 }
 
-.postInfo {
-    display: flex;
-    flex-direction: column;
-    color: #2E2F36;
+
+.postDescription {
+    color: white;
+    margin-top: 16px;
 }
 
 /* Buttons */
@@ -30,7 +108,16 @@
     align-items: flex-start;
     align-self: stretch;
     cursor: pointer;
+    color: #A1A3A7;
 }
+
+@media (max-width: 767px) {
+    .postInteraction {
+        padding: 0px 0px;
+
+    }
+}
+
 
 .clicked {
     color: var(--yellow, #E9B425);
@@ -40,11 +127,13 @@
 
 .everyComments {
     color: #FFF;
-    font-family: Poppins;
     font-size: 12px;
-    font-weight: 400;
     margin-top: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
+
 
 .seeAllComments {
     text-align: center;
@@ -57,4 +146,27 @@
     }
 }
 
+.inputPost {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 24px;
+    height: 37px;
+    border-radius: 46px;
+    border-color: #757575 !important;
+    border-radius: 35px !important;
+}
 
+.scrollHidden {
+    max-height: 330px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+      }
+  }
+
+  .date{
+    color: var(--gray-gray-300, #75767D);
+    font-weight: 500;
+  }
