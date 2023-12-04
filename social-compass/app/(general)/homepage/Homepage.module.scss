@@ -39,6 +39,7 @@
     position: absolute;
     bottom: 8px;
     width: 100px
+    
 }
 
 
@@ -49,9 +50,7 @@
     align-items: flex-end;
     right: 2%;
     top: 10%;
-    /* Add this line */
     position: fixed;
-    /* Add this line */
     z-index: 1;
 }
 
@@ -77,6 +76,7 @@
     height: 60px;
     background-color: #1E1F23;
     cursor: pointer;
+    padding-top: 10px;
 }
 
 
@@ -110,6 +110,7 @@
     text-align: left;
     background-color: #1E1F23;
     width: 100%;
+    height: auto;
 }
 
 

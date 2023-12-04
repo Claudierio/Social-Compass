@@ -28,6 +28,7 @@ interface Author {
 }
 
 interface PostData {
+  id: string;
   image: string;
   text: string;
   author: Author;
@@ -144,6 +145,49 @@ const Postage = () => {
     fetchData();
   }, []);
 
+  const likePost = async (postId: string) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/posts/like/${postId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({}), // Adiciona um corpo JSON vazio
+          }
+        );
+
+        if (response.ok) {
+          // Atualizar os posts após a curtida
+          const updatedPosts = await fetchPosts();
+          setPosts(updatedPosts);
+        } else {
+          console.error("Erro ao curtir o post:", response.status);
+        }
+      } catch (error) {
+        console.error("Erro ao curtir o post:", error);
+      }
+    }
+  };
+
+  const handleLikeClick = async (postId: string) => {
+    try {
+
+      await likePost(postId);
+
+      // Atualizar o estado local com o novo número de curtidas
+      setLikeClicked(!likeClicked);
+      setLikeCount((prevCount) => prevCount + 1);
+    } catch (error) {
+      console.error("Erro ao lidar com a curtida do post:", error);
+    }
+  };
+
   const homePostStyle = {
     width: modalOpen ? "calc(80% - 350px)" : "80%",
     marginLeft: modalOpen ? "350px" : "0",
@@ -198,11 +242,6 @@ const Postage = () => {
   const [likeClicked, setLikeClicked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
   const [shareClicked, setShareClicked] = useState(false);
-
-  const handleLikeClick = () => {
-    setLikeClicked(!likeClicked);
-    setLikeCount((prevCount) => prevCount + 1);
-  };
 
   const handleCommentClick = () => {
     setCommentClicked(!commentClicked);
@@ -288,7 +327,7 @@ const Postage = () => {
                     className={`${styles.postLike} ${
                       likeClicked ? styles.clicked : ""
                     }`}
-                    onClick={handleLikeClick}
+                    onClick={() => handleLikeClick(postData.id)}
                   >
                     <span
                       className={styles.likeText}
@@ -302,7 +341,7 @@ const Postage = () => {
                           marginRight: "5px",
                         }}
                       />
-                      Curtiu {likeCount > 0 && `(${likeCount})`}
+                      Curtiu {postData.likes && `(${postData.likes})`}
                     </span>
                     <div className={styles.likesBadge} id="likesBadge">
                       <span

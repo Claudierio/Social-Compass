@@ -200,3 +200,7 @@
     color: var(--gray-gray-300, #75767D);
     font-weight: 500;
   }
+
+  .postLike.clicked {
+    color: var(--yellow, #E9B425); // Substitua por sua cor desejada
+  }
