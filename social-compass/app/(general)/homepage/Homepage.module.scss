@@ -11,6 +11,14 @@
     order: 0;
     flex-grow: 0;
     margin-top: 28px;
+    margin-bottom: 21px;
+}
+
+@media (max-width: 767px) {
+    .homePostStyle {
+        width: 99%;
+
+    }
 }
 
 .buttonPost {
@@ -149,13 +157,6 @@
     font-size: 12px;
     font-weight: 400;
 
-}
-
-@media (max-width: 767px) {
-    .homePostStyle {
-        width: 99%;
-
-    }
 }
 
 /* TIMELINE */

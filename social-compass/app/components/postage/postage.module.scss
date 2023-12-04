@@ -5,6 +5,8 @@
     margin-top: auto;
 }
 
+
+
 @media (max-width: 767px) {
     .mainContent {
         margin-right: 0;
@@ -45,7 +47,12 @@
 }
 
 .avatarContainer input {
-    color: #75767D;
+    font-family: MontSerrat;
+    background: transparent;
+    border: 1px solid gray;
+    color: white;
+    padding: 10px 15px;
+    outline: none;
 }
 
 
@@ -82,7 +89,6 @@
     display: flex;
     background: #1E1F23;
     justify-content: flex-start;
-
     padding: 16px;
     border: 2px solid #2E2F36;
     border-radius: 16px;
@@ -90,6 +96,8 @@
     flex: none;
     order: 0;
     flex-grow: 0;
+    margin-bottom: 24px;
+
 }
 
 

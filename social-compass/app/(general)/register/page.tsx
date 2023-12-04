@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function Register() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState("");
 
@@ -31,11 +31,11 @@ export default function Login() {
 
   const [date, setDate] = useState("");
   const router = useRouter();
-  //const [labelVisible, setLabelVisible] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
   };
+
 
   const applyDateMask = (value: string) => {
     let cleanValue = value.replace(/\D/g, "");
@@ -80,7 +80,81 @@ export default function Login() {
       password: "",
     });
 
-    /* Validações para a senha */
+    if (user.length > 255) {
+      setErrors((errors) => ({
+        ...errors,
+        nome: "Nome não pode ter mais de 255 caracteres. ",
+      }));
+      isValid = false;
+    }
+
+    if (user.length < 3) {
+      setErrors((errors) => ({
+        ...errors,
+        nome: "Nome não pode ser nulo. ",
+      }));
+      isValid = false;
+    }
+
+    if (!user) {
+      setErrors((errors) => ({
+        ...errors,
+        nome: "Nome é obrigatório. Por favor, preencha este campo",
+      }));
+      isValid = false;
+    }
+
+    if (username.length > 255) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Usuário não pode ter mais de 255 caracteres. ",
+      }));
+      isValid = false;
+    } else if (!username) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Usuário é obrigatório. Por favor, preencha este campo",
+      }));
+      isValid = false;
+    }
+
+    let formattedDate = "";
+    if (!date) {
+      setErrors((errors) => ({
+        ...errors,
+        nascimento: "Data de Nascimento é obrigatória. Por favor, preencha este campo",
+      }));
+      isValid = false;
+    } else {
+      const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = date.match(dateRegex);
+
+      if (!match) {
+        setErrors((errors) => ({
+          ...errors,
+          nascimento:
+            "O formato válido para a data é dd/mm/aaaa.. Por favor, preencha este campo corretamente",
+        }));
+        isValid = false;
+      } else {
+        const [, day, month, year] = match;
+
+        formattedDate = `${year}-${month}-${day}`;
+      }
+    }
+
+
+    if (email.length === 0) {
+      setErrors((errors) => ({ ...errors, email: "E-mail é obrigatório. Por favor, preencha este campo" }));
+      isValid = false;
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      setErrors((errors) => ({
+        ...errors,
+        email: "Por favor, insira um e-mail válido.",
+      }));
+      isValid = false;
+    }
+
 
     if (!password || !confirmPassword) {
       setErrors((errors) => ({
@@ -99,7 +173,6 @@ export default function Login() {
       isValid = false;
     }
 
-    /* Validações para a confirmação da senha */
     if (confirmPassword !== password) {
       setErrors((errors) => ({
         ...errors,
@@ -109,77 +182,6 @@ export default function Login() {
       isValid = false;
     }
 
-    /* Validações para o usuário */
-
-    if (username.length > 255) {
-      setErrors((errors) => ({
-        ...errors,
-        username: "Usuário não pode ter mais de 255 caracteres. ",
-      }));
-      isValid = false;
-    } else if (!username) {
-      setErrors((errors) => ({
-        ...errors,
-        username: "Usuário é obrigatório. ",
-      }));
-      isValid = false;
-    }
-
-    /* Validações para o nome */
-
-    if (user.length > 255) {
-      setErrors((errors) => ({
-        ...errors,
-        nome: "Nome não pode ter mais de 255 caracteres. ",
-      }));
-      isValid = false;
-    }
-
-    if (!user) {
-      setErrors((errors) => ({
-        ...errors,
-        nome: "Nome é obrigatório. ",
-      }));
-      isValid = false;
-    }
-
-    /* Validações para o email */
-    if (email.length === 0) {
-      setErrors((errors) => ({ ...errors, email: "E-mail é obrigatório." }));
-      isValid = false;
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-      setErrors((errors) => ({
-        ...errors,
-        email: "Por favor, insira um e-mail válido.",
-      }));
-      isValid = false;
-    }
-
-    /* Validações para a data de nascimento */
-    let formattedDate = "";
-    if (!date) {
-      setErrors((errors) => ({
-        ...errors,
-        nascimento: "Data de Nascimento é obrigatória.",
-      }));
-      isValid = false;
-    } else {
-      const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-      const match = date.match(dateRegex);
-
-      if (!match) {
-        setErrors((errors) => ({
-          ...errors,
-          nascimento:
-            "Por favor, insira uma data válida no formato dd/mm/aaaa.",
-        }));
-        isValid = false;
-      } else {
-        const [, day, month, year] = match;
-
-        formattedDate = `${year}-${month}-${day}`;
-      }
-    }
 
     if (isValid) {
       try {
@@ -218,14 +220,11 @@ export default function Login() {
       } catch (error) {
         console.error("Ocorreu um erro:", error);
       }
-      console.log(formattedDate);
+      
     }
   };
 
-  const checkUsernameUnique = async (username: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return true;
-  };
+
 
   return (
     <div className={styles.main}>
@@ -241,10 +240,6 @@ export default function Login() {
               marginTop: { xs: "-10px", sm: "60px" },
               padding: { xs: "24px", sm: "3" },
               maxWidth: { xs: "342px", sm: "400px" },
-              color: "white",
-              width: "100vw",
-              height: "100vh",
-              overflow: "hidden",
             }}
           >
             <Typography variant="h2" gutterBottom>
@@ -284,10 +279,18 @@ export default function Login() {
                   ),
                   style: { color: "#FFFFFF" },
                   classes: {
-                    notchedOutline: styles.whiteBorder,
+                    root: errors.password && styles.errorBorder,
+                    notchedOutline: errors.password
+                      ? styles.errorBorder
+                      : styles.whiteBorder,
                   },
                 }}
-                InputLabelProps={{ style: { color: "#757575" } }}
+                InputLabelProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
+                FormHelperTextProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
               />
               <TextField
                 label="Usuário"
@@ -313,10 +316,18 @@ export default function Login() {
                   ),
                   style: { color: "#FFFFFF" },
                   classes: {
-                    notchedOutline: styles.whiteBorder,
+                    root: errors.password && styles.errorBorder,
+                    notchedOutline: errors.password
+                      ? styles.errorBorder
+                      : styles.whiteBorder,
                   },
                 }}
-                InputLabelProps={{ style: { color: "#757575" } }}
+                InputLabelProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
+                FormHelperTextProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
               />
 
               <TextField
@@ -341,15 +352,20 @@ export default function Login() {
                       />
                     </InputAdornment>
                   ),
-                  style: { color: "#FFF" },
+                  style: { color: "#FFFFFF" },
                   classes: {
-                    notchedOutline: styles.whiteBorder,
-                  },
-                  inputProps: {
-                    className: styles.whiteIcon,
+                    root: errors.password && styles.errorBorder,
+                    notchedOutline: errors.password
+                      ? styles.errorBorder
+                      : styles.whiteBorder,
                   },
                 }}
-                InputLabelProps={{ style: { color: "#757575" } }}
+                InputLabelProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
+                FormHelperTextProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
               />
               <TextField
                 label="Email"
@@ -375,10 +391,18 @@ export default function Login() {
                   ),
                   style: { color: "#FFFFFF" },
                   classes: {
-                    notchedOutline: styles.whiteBorder,
+                    root: errors.password && styles.errorBorder,
+                    notchedOutline: errors.password
+                      ? styles.errorBorder
+                      : styles.whiteBorder,
                   },
                 }}
-                InputLabelProps={{ style: { color: "#757575" } }}
+                InputLabelProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
+                FormHelperTextProps={{
+                  style: { color: errors.password ? "#E9B425" : "#757575" },
+                }}
               />
               <TextField
                 label="Senha"

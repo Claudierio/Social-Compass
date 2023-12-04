@@ -1,4 +1,3 @@
-// store/store.ts
 import create from 'zustand';
 
 interface GlobalState {
@@ -18,5 +17,7 @@ const useStore = create<GlobalState>((set) => ({
   setSelectedItem: (item) => set({ selectedItem: item }),
   setModalOpen: (value) => set({ modalOpen: value }),
 }));
+
+
 
 export default useStore;

@@ -20,7 +20,22 @@ interface User {
   image: string;
 }
 
-const getUsers = async (): Promise<User[]> => {
+//Interfaces para o post
+interface Author {
+  id: string;
+  name: string;
+  image: string;
+}
+
+interface PostData {
+  image: string;
+  text: string;
+  author: Author;
+  location: string;
+  createdAt: string;
+}
+
+const fetchUsers = async (): Promise<User[]> => {
   const token = localStorage.getItem("token");
   if (token) {
     try {
@@ -41,10 +56,70 @@ const getUsers = async (): Promise<User[]> => {
         return usersData;
       }
     } catch (error) {
-      console.error("Erro ao obter informações dos usuários:", error);
+      console.error("Informacoes de usuários nao obtidas", error);
     }
   }
-  return []; 
+  return [];
+};
+
+const fetchPosts = async () => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    try {
+      const response = await fetch(`http://localhost:3001/posts`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        const sortedPosts = data
+          .map((post: PostData) => ({
+            ...post,
+            createdAt: new Date(post.createdAt), // Convert to a date object
+          }))
+          .sort((a: PostData, b: PostData) => {
+            const dateA = new Date(a.createdAt).toISOString();
+            const dateB = new Date(b.createdAt).toISOString();
+
+            if (dateA < dateB) {
+              return 1;
+            } else if (dateA > dateB) {
+              return -1;
+            } else {
+              return 0;
+            }
+          });
+
+        return sortedPosts;
+      } else {
+        console.error("Informacoes dos posts nao obtidas", response.status);
+      }
+    } catch (error) {
+      console.error("Erro ao obter informações dos posts:", error);
+    }
+  }
+};
+
+const calculateTimeElapsed = (createdAt: string) => {
+  const now = new Date();
+  const createdDate = new Date(createdAt);
+  const timeDifference = now.getTime() - createdDate.getTime();
+  const minutes = Math.floor(timeDifference / (1000 * 60));
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} ${days === 1 ? "dia" : "dias"} atrás`;
+  } else if (hours > 0) {
+    return `${hours} ${hours === 1 ? "hora" : "horas"} atrás`;
+  } else {
+    return `${minutes} ${minutes === 1 ? "minuto" : "minutos"} atrás`;
+  }
 };
 
 const Postage = () => {
@@ -56,6 +131,17 @@ const Postage = () => {
     setSelectedItem,
     setModalOpen,
   } = useStore();
+
+  const [posts, setPosts] = useState<PostData[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedPosts = await fetchPosts();
+      if (Array.isArray(fetchedPosts) && fetchedPosts.length > 0) {
+        setPosts(fetchedPosts);
+      }
+    };
+    fetchData();
+  }, []);
 
   const homePostStyle = {
     width: modalOpen ? "calc(80% - 350px)" : "80%",
@@ -71,7 +157,7 @@ const Postage = () => {
   const [isScrollNeeded, setIsScrollNeeded] = useState(false);
   const fetchData = async () => {
     try {
-      const usersInfo: User[] = await getUsers();
+      const usersInfo: User[] = await fetchUsers();
       setUsers(usersInfo);
     } catch (error) {
       console.error("Erro ao obter informações dos usuários:", error);
@@ -80,7 +166,7 @@ const Postage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     setIsScrollNeeded(users.length > 4);
@@ -127,201 +213,186 @@ const Postage = () => {
 
   const [likeCount, setLikeCount] = useState(0);
 
-
   return (
-         <section style={{ marginTop: "10px", marginBottom: "100px" }}>
-          <div className={styles.timeline}>
-            <Box>
-              <section
-                className={styles.timelinePost}
-                style={isMobile ? mobileHomePostStyle : homePostStyle}
-              >
-                <div className={styles.container}>
-                  <div className={styles.postHeader}>
-                    <div className={styles.avatarContainer}>
-                      <Avatar
-                        alt="Avatar"
-                        src={userAvatar.src}
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          marginRight: "16px",
-                        }}
-                      />
-                      <div className={styles.postInfo}>
-                        <div className={styles.nomeUser}>
-                          <h4 style={{ color: "white", fontWeight: 500 }}>
-                            Nome de usuário
-                          </h4>
-                        </div>
-                        <div className={styles.postDate}>
-                          <p className={styles.date}>
-                            12 minutos atrás em{" "}
-                            <span style={{ color: "white", fontWeight: 500 }}>
-                              Paisagens Exuberantes
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={styles.postDescription}>
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Assumenda, unde? Dignissimos, at consequatur quo, est
-                        eius inventore dolores culpa quisquam dolorum quidem nam
-                        velit doloremque hic. Nihil hic laborum omnis?
-                      </p>
-                    </div>
-
-                    <div className={styles.postImage}>
-                      <img
-                        src="/postExample.png"
-                        alt="imagePost"
-                        style={{
-                          width: "100%",
-                          margin: 0,
-                          padding: 0,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.postInteraction}>
-                    <div
-                      className={`${styles.postLike} ${
-                        likeClicked ? styles.clicked : ""
-                      }`}
-                      onClick={handleLikeClick}
-                    >
-                      <span
-                        className={styles.likeText}
-                        id="likeText"
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <ThumbUpIcon
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginRight: "5px",
-                          }}
-                        />
-                        Curtiu {likeCount > 0 && `(${likeCount})`}
-                      </span>
-                      <div className={styles.likesBadge} id="likesBadge">
-                        <span
-                          className={styles.likesNumber}
-                          id="likesNumber"
-                        ></span>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`${styles.postComment} ${
-                        commentClicked ? styles.clicked : ""
-                      }`}
-                      onClick={handleCommentClick}
-                    >
-                      <span
-                        className={styles.commentText}
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <ChatIcon
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginRight: "5px",
-                          }}
-                        />
-                        Comentários
-                      </span>
-                      <div className={styles.commentsBadge}>
-                        <span className={styles.commentsNumber}></span>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`${styles.postShare} ${
-                        shareClicked ? styles.clicked : ""
-                      }`}
-                      onClick={handleShareClick}
-                    >
-                      <span
-                        className={styles.shareText}
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <ShareIcon
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginRight: "5px",
-                          }}
-                        />
-                        Compartilhar
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className={styles.postComments}>
-                    <div
-                      className={styles.avatarContainer}
+    <section style={{ marginTop: "10px", marginBottom: "100px" }}>
+      <div className={styles.timeline}>
+        {posts.map((postData, index) => (
+          <Box key={index}>
+            <section
+              className={styles.timelinePost}
+              style={isMobile ? mobileHomePostStyle : homePostStyle}
+            >
+              <div className={styles.container}>
+                <div className={styles.postHeader}>
+                  <div className={styles.avatarContainer}>
+                    <Avatar
+                      alt={postData.author.name}
+                      src={postData.author.image}
                       style={{
-                        marginTop: "16px",
+                        width: "32px",
+                        height: "32px",
+                        marginRight: "16px",
                       }}
-                    >
-                      <Avatar
-                        alt="Avatar"
-                        src={userAvatar.src}
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          marginRight: "16px",
-                        }}
-                      />
-                      <input
-                        style={{
-                          fontFamily: "MontSerrat",
-                          background: "transparent",
-                          border: "1px solid gray",
-                          color: "white",
-                          padding: "10px 15px",
-                          outline: "none",
-                          ...(isFocused && focusedStyle),
-                        }}
-                        type="text"
-                        name="text"
-                        className={styles.inputPost}
-                        placeholder="No que você está pensando?"
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
-                      />
-                    </div>
-
-                    <div className={styles.everyComments}>
-                      <span className={styles.everyCommentsText}>
-                        Todos os comentários
-                      </span>
-                    </div>
-
-                    <Divider
-                      style={{ marginTop: "16px", background: "#A1A3A7" }}
                     />
-
-                    <div className={styles.seeAllComments}>
-                      <p
-                        className={styles.seeAllCommentsText}
-                        style={{ marginTop: "16px", cursor: "pointer" }}
-                      >
-                        Ver todos os comentários
-                      </p>
+                    <div className={styles.postInfo}>
+                      <div className={styles.nomeUser}>
+                        <h4 style={{ color: "white", fontWeight: 500 }}>
+                          Nome de usuário
+                        </h4>
+                      </div>
+                      <div className={styles.postDate}>
+                        <p className={styles.date}>
+                          {calculateTimeElapsed(postData.createdAt)}
+                        </p>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className={styles.postDescription}>
+                    <p>{postData.text}</p>
+                  </div>
+
+                  <div className={styles.postImage}>
+                    <img
+                      src={postData.image}
+                      alt="imagePost"
+                      style={{
+                        width: "100%",
+                        margin: 0,
+                        padding: 0,
+                      }}
+                    />
                   </div>
                 </div>
-              </section>
-            </Box>
-          </div>
-        </section>
-  )
-}
+
+                <div className={styles.postInteraction}>
+                  <div
+                    className={`${styles.postLike} ${
+                      likeClicked ? styles.clicked : ""
+                    }`}
+                    onClick={handleLikeClick}
+                  >
+                    <span
+                      className={styles.likeText}
+                      id="likeText"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ThumbUpIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Curtiu {likeCount > 0 && `(${likeCount})`}
+                    </span>
+                    <div className={styles.likesBadge} id="likesBadge">
+                      <span
+                        className={styles.likesNumber}
+                        id="likesNumber"
+                      ></span>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`${styles.postComment} ${
+                      commentClicked ? styles.clicked : ""
+                    }`}
+                    onClick={handleCommentClick}
+                  >
+                    <span
+                      className={styles.commentText}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ChatIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Comentários
+                    </span>
+                    <div className={styles.commentsBadge}>
+                      <span className={styles.commentsNumber}></span>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`${styles.postShare} ${
+                      shareClicked ? styles.clicked : ""
+                    }`}
+                    onClick={handleShareClick}
+                  >
+                    <span
+                      className={styles.shareText}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ShareIcon
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          marginRight: "5px",
+                        }}
+                      />
+                      Compartilhar
+                    </span>
+                  </div>
+                </div>
+
+                <div className={styles.postComments}>
+                  <div
+                    className={styles.avatarContainer}
+                    style={{
+                      marginTop: "16px",
+                    }}
+                  >
+                    <Avatar
+                      alt="Avatar"
+                      src={userAvatar.src}
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        marginRight: "16px",
+                      }}
+                    />
+                    <input
+                      style={{ ...(isFocused && focusedStyle) }}
+                      type="text"
+                      name="text"
+                      className={styles.inputPost}
+                      placeholder="No que você está pensando?"
+                      onFocus={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
+                    />
+                  </div>
+
+                  <div className={styles.everyComments}>
+                    <span className={styles.everyCommentsText}>
+                      Todos os comentários
+                    </span>
+                  </div>
+
+                  <Divider
+                    style={{ marginTop: "16px", background: "#A1A3A7" }}
+                  />
+
+                  <div className={styles.seeAllComments}>
+                    <p
+                      className={styles.seeAllCommentsText}
+                      style={{ marginTop: "16px", cursor: "pointer" }}
+                    >
+                      Ver todos os comentários
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </Box>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default Postage;

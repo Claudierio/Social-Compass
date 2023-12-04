@@ -27,6 +27,7 @@ interface PostData {
   location: string;
   image: string;
   authorId: string;
+  createdAt: string; // Adicione esta propriedade
 }
 
 const defaultPostData: PostData = {
@@ -34,6 +35,7 @@ const defaultPostData: PostData = {
   location: "",
   image: "",
   authorId: "",
+  createdAt: "",
 };
 
 const getUsers = async (): Promise<User[]> => {
@@ -82,7 +84,7 @@ const getUserInfo = async () => {
         return data;
       }
     } catch (error) {
-      console.error("Erro ao obter informações do usuário:", error);
+      console.error("Informações do usuário não obtidas", error);
     }
   }
 };
@@ -114,12 +116,12 @@ const HomePage = () => {
       const usersInfo: User[] = await getUsers();
       setUsers(usersInfo);
     } catch (error) {
-      console.error("Erro ao obter informações dos usuários:", error);
+      console.error("Informações do usuário não obtidas", error);
     }
   };
 
   //post
-  const [image, setImage] = useState<string>("");
+  const [userImage, setUserImage] = useState<string>("");
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const [postData, setPostData] = useState<PostData>(defaultPostData);
 
@@ -128,8 +130,8 @@ const HomePage = () => {
       const userInfo = await getUserInfo();
 
       if (userInfo) {
-        setImage(userInfo.image);
         setLoggedInUserId(userInfo.id);
+        setUserImage(userInfo.image);
       }
     };
 
@@ -150,6 +152,8 @@ const HomePage = () => {
     const { value } = e.target;
     setPostData((prevState) => ({ ...prevState, location: value }));
   };
+
+  
 
   const handlePostClick = async () => {
     try {
@@ -227,10 +231,6 @@ const HomePage = () => {
   };
 
   const [likeCount, setLikeCount] = useState(0);
-
-  const [showSecondInput, setShowSecondInput] = useState(false);
-  const [showThirdInput, setShowThirdInput] = useState(false);
-
   const [showAdditionalInputs, setShowAdditionalInputs] = useState({
     photo: false,
     map: false,
@@ -274,7 +274,7 @@ const HomePage = () => {
             <div className={styles.avatarContainer}>
               <Avatar
                 alt="Avatar"
-                src={userAvatar.src}
+                src={userImage}
                 style={{
                   width: "32px",
                   height: "32px",
