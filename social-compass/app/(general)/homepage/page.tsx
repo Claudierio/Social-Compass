@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { create } from "zustand";
 import styles from "./Homepage.module.scss";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import Navbar from "../../components/navbar";
-import Postage from '../../components/postage'
+import Postage from "../../components/postage";
 import useStore from "../stateZustand";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -15,16 +15,26 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Avatar from "@mui/material/Avatar";
 import userAvatar from "/public/icons/user-avatar.png";
 import { Box, Card } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ChatIcon from "@mui/icons-material/Chat";
-import ShareIcon from "@mui/icons-material/Share";
 
 interface User {
   id: string;
   name: string;
   image: string;
 }
+
+interface PostData {
+  text: string;
+  location: string;
+  image: string;
+  authorId: string;
+}
+
+const defaultPostData: PostData = {
+  text: "",
+  location: "",
+  image: "",
+  authorId: "",
+};
 
 const getUsers = async (): Promise<User[]> => {
   const token = localStorage.getItem("token");
@@ -50,7 +60,31 @@ const getUsers = async (): Promise<User[]> => {
       console.error("Erro ao obter informações dos usuários:", error);
     }
   }
-  return []; 
+  return [];
+};
+
+const getUserInfo = async () => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
+
+  if (token && userId) {
+    try {
+      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: ` Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (error) {
+      console.error("Erro ao obter informações do usuário:", error);
+    }
+  }
 };
 
 const HomePage = () => {
@@ -84,9 +118,70 @@ const HomePage = () => {
     }
   };
 
+  //post
+  const [image, setImage] = useState<string>("");
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+  const [postData, setPostData] = useState<PostData>(defaultPostData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo();
+
+      if (userInfo) {
+        setImage(userInfo.image);
+        setLoggedInUserId(userInfo.id);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPostData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setPostData((prevState) => ({ ...prevState, image: value }));
+  };
+
+  const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setPostData((prevState) => ({ ...prevState, location: value }));
+  };
+
+  const handlePostClick = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const updatedPostData = { ...postData, authorId: loggedInUserId };
+
+      const response = await fetch("http://localhost:3001/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedPostData),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Post enviado com sucesso:", responseData);
+        setPostData(defaultPostData);
+      } else {
+        console.error("Falha ao enviar post:", response.status);
+      }
+    } catch (error) {
+      console.error("Erro ao processar o envio do post:", error);
+    }
+  };
+
+  //-------------
+
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     setIsScrollNeeded(users.length > 4);
@@ -200,6 +295,7 @@ const HomePage = () => {
                 name="text"
                 className={styles.inputPost}
                 placeholder="No que você está pensando?"
+                onChange={handleInputChange}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
               />
@@ -218,8 +314,9 @@ const HomePage = () => {
                   marginTop: "10px",
                 }}
                 type="text"
-                name="text"
+                name="image"
                 className={styles.inputPost}
+                onChange={handleImageChange}
                 placeholder="Escreva a URL da sua imagem aqui"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -237,12 +334,13 @@ const HomePage = () => {
                   outline: "none",
                   width: "100%",
                   ...(isFocused && focusedStyle),
-                  marginTop: "10px", 
+                  marginTop: "10px",
                 }}
                 type="text"
-                name="text"
+                name="location"
                 className={styles.inputPost}
                 placeholder="Onde você está?"
+                onChange={handleLocationChange}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
               />
@@ -271,8 +369,8 @@ const HomePage = () => {
 
             <svg
               className={styles.faImg}
-              onClick={handlePhotoClick}
               xmlns="http://www.w3.org/2000/svg"
+              onClick={handleMapClick}
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -304,7 +402,7 @@ const HomePage = () => {
 
             <svg
               className={styles.faMap}
-              onClick={handleMapClick}
+              onClick={handlePhotoClick}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -341,14 +439,18 @@ const HomePage = () => {
             </svg>
 
             <div className={styles.buttonPost}>
-              <button type="submit" className={styles.containerButton}>
+              <button
+                type="submit"
+                className={styles.containerButton}
+                onClick={handlePostClick}
+              >
                 Postar
               </button>
             </div>
           </div>
         </section>
 
-        <Postage/>
+        <Postage />
 
         <div className={styles.accordions}>
           <div>
@@ -381,7 +483,6 @@ const HomePage = () => {
                 <AccordionDetails
                   key={index}
                   style={{ display: "flex", cursor: "pointer" }}
-
                 >
                   <Avatar
                     alt={user.name}
