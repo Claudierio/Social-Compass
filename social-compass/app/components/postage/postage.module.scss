@@ -13,6 +13,22 @@
     }
 }
 
+.postDate{
+    display: flex;
+}
+
+.clock{
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+
+.postInfo{
+    margin-top: -5px;
+    color: white;
+    font-weight: 500 ;
+}
+
 .post {
     display: flex;
     flex-direction: column;
@@ -98,6 +114,12 @@
     flex-grow: 0;
     margin-bottom: 24px;
 
+}
+
+.location{
+    color: white;
+    font-weight: 500;
+    margin-left: 5px;
 }
 
 

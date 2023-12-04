@@ -33,6 +33,7 @@ interface PostData {
   author: Author;
   location: string;
   createdAt: string;
+  likes: string;
 }
 
 const fetchUsers = async (): Promise<User[]> => {
@@ -80,7 +81,7 @@ const fetchPosts = async () => {
         const sortedPosts = data
           .map((post: PostData) => ({
             ...post,
-            createdAt: new Date(post.createdAt), // Convert to a date object
+            createdAt: new Date(post.createdAt),
           }))
           .sort((a: PostData, b: PostData) => {
             const dateA = new Date(a.createdAt).toISOString();
@@ -236,13 +237,30 @@ const Postage = () => {
                     />
                     <div className={styles.postInfo}>
                       <div className={styles.nomeUser}>
-                        <h4 style={{ color: "white", fontWeight: 500 }}>
-                          Nome de usuário
-                        </h4>
+                        <h4>{postData.author.name}</h4>
                       </div>
                       <div className={styles.postDate}>
+                        <svg
+                          className={styles.clock}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                        >
+                          <path
+                            d="M6 3V6H8.25M10.5 6C10.5 6.59095 10.3836 7.17611 10.1575 7.72208C9.93131 8.26804 9.59984 8.76412 9.18198 9.18198C8.76412 9.59984 8.26804 9.93131 7.72208 10.1575C7.17611 10.3836 6.59095 10.5 6 10.5C5.40905 10.5 4.82389 10.3836 4.27792 10.1575C3.73196 9.93131 3.23588 9.59984 2.81802 9.18198C2.40016 8.76412 2.06869 8.26804 1.84254 7.72208C1.6164 7.17611 1.5 6.59095 1.5 6C1.5 4.80653 1.97411 3.66193 2.81802 2.81802C3.66193 1.97411 4.80653 1.5 6 1.5C7.19347 1.5 8.33807 1.97411 9.18198 2.81802C10.0259 3.66193 10.5 4.80653 10.5 6Z"
+                            stroke="#75767D"
+                            stroke-width="0.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                         <p className={styles.date}>
                           {calculateTimeElapsed(postData.createdAt)}
+                          <span className={styles.location}>
+                            {postData.location}
+                          </span>
                         </p>
                       </div>
                     </div>
