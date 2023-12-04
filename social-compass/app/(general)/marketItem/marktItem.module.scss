@@ -1,3 +1,9 @@
+.main {
+    background: #17181c;
+    margin-top: -40px;
+    padding-top: 30px;
+}
+
 
 .itemDetails {
     text-align: center;
@@ -89,17 +95,16 @@
     display: flex;
 }
 
-.postDate{
+.postDate {
     display: flex;
 }
 
-.timerIcon{
+.timerIcon {
     margin-top: 3px;
     margin-right: 6px;
 }
 
-.options{
+.options {
     display: flex;
     justify-content: space-between;
 }
-

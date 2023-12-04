@@ -19,6 +19,39 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ChatIcon from "@mui/icons-material/Chat";
 import ShareIcon from "@mui/icons-material/Share";
 
+interface User {
+  id: string;
+  name: string;
+  image: string;
+}
+
+const getUsers = async (): Promise<User[]> => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const response = await fetch(`http://localhost:3001/users/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const usersData: User[] = data.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          image: user.image,
+        }));
+        return usersData;
+      }
+    } catch (error) {
+      console.error("Erro ao obter informações dos usuários:", error);
+    }
+  }
+  return []; 
+};
+
 const HomePage = () => {
   const {
     open,
@@ -38,6 +71,25 @@ const HomePage = () => {
     width: "110%",
     marginLeft: "-4%",
   };
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [isScrollNeeded, setIsScrollNeeded] = useState(false);
+  const fetchData = async () => {
+    try {
+      const usersInfo: User[] = await getUsers();
+      setUsers(usersInfo);
+    } catch (error) {
+      console.error("Erro ao obter informações dos usuários:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); 
+
+  useEffect(() => {
+    setIsScrollNeeded(users.length > 4);
+  }, [users]);
 
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" && window.innerWidth <= 767
@@ -102,13 +154,10 @@ const HomePage = () => {
     }));
   };
 
-  
-
   return (
     <Card
       style={{
         background: "#17181c",
-
       }}
     >
       <div className={styles.mainContent}>
@@ -165,7 +214,7 @@ const HomePage = () => {
                   outline: "none",
                   width: "100%",
                   ...(isFocused && focusedStyle),
-                  marginTop: "10px", 
+                  marginTop: "10px",
                 }}
                 type="text"
                 name="text"
@@ -506,7 +555,9 @@ const HomePage = () => {
                 background: "var(--gray-gray-700, #1E1F23)",
                 display: "block",
                 color: "white",
+                maxHeight: isScrollNeeded ? "270px" : "none",
               }}
+              className={isScrollNeeded ? styles.scrollHidden : ""}
             >
               <AccordionSummary
                 expandIcon={
@@ -521,23 +572,25 @@ const HomePage = () => {
               >
                 <Typography style={{ color: "white" }}>Meus amigos</Typography>
               </AccordionSummary>
-              <AccordionDetails
-                style={{
-                  display: "flex",
-                  color: "white",
-                }}
-              >
-                <Avatar
-                  alt="Remy Sharp"
-                  src={userAvatar.src}
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    marginRight: "16px",
-                  }}
-                />
-                <Typography>Matheus Gonsalves</Typography>
-              </AccordionDetails>
+              {users.map((user, index) => (
+                <AccordionDetails
+                  key={index}
+                  style={{ display: "flex", cursor: "pointer" }}
+
+                >
+                  <Avatar
+                    alt={user.name}
+                    src={user.image}
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      marginRight: "10px",
+                      marginTop: "-5px",
+                    }}
+                  />
+                  <Typography>{user.name}</Typography>
+                </AccordionDetails>
+              ))}
             </Accordion>
           </div>
 

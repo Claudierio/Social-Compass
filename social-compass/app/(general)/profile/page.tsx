@@ -171,7 +171,7 @@ const profile = () => {
                 component="img"
                 height={isMobile ? "250" : "280"}
                 image={
-                  isMobile ? "/capa-perfil-mobile.png" : "/profileWallpaper.png"
+                  isMobile ? "/profileWallpaper.png" : "/profileWallpaper.png"
                 }
                 alt="Capa do perfil"
               />

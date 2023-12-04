@@ -15,12 +15,9 @@ import backArrow from "/public/icons/backArrow.png";
 import Avatar from "@mui/material/Avatar";
 import { useRouter } from "next/navigation";
 import { Card, useMediaQuery } from "@mui/material";
-import {
-  styled,
-  useTheme,
-} from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Stack from "@mui/material/Stack";
+import { styled, useTheme } from "@mui/material/styles";
 
 const drawerWidth = 350;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
@@ -272,9 +269,9 @@ export default function NavBar({
               >
                 {nome}
               </Typography>
-              <Link href="/perfil" passHref>
+              <Link href="/profile" passHref>
                 <StyledBadge
-/*                   overlap="circular"
+                /*                   overlap="circular"
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   variant="dot" */
                 >
