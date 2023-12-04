@@ -6,6 +6,7 @@ import { Button, Typography, Grid, Card } from "@mui/material";
 import Navbar from "../../components/navbar";
 import useStore from "../stateZustand";
 import Link from "next/link";
+import ModalMarket from "../../components/modalMarket";
 
 const products = [
   {
@@ -67,6 +68,8 @@ const Marketplace = () => {
     setSelectedItem,
     setModalOpen,
   } = useStore();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const homePostStyle = {
     width: modalOpen ? "calc(100% - 350px)" : "100%",
@@ -156,10 +159,15 @@ const Marketplace = () => {
             <Button
               type="submit"
               variant="contained"
+              onClick={() => setIsModalOpen(true)}
               className={`${styles.buttonRegister} ${styles.addButtonMargin}`}
             >
               Adicionar item
             </Button>
+            <ModalMarket
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                  />
           </div>
         </div>
 
