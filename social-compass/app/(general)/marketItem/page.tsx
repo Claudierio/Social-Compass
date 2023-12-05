@@ -53,10 +53,10 @@ const MarktItem = () => {
 
   const item = {
     id: 1,
-    title: "Produto 1",
+    title: "PlayStation 5",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
-    price: "R$ 300,00",
+      "Maravilhe-se com os gráficos incríveis e experimente os recursos do novo PS5. Compre agora e aproveite as ofertas para o novo PlayStation 5",
+    price: "R$ 3.999,00",
     status: "Ainda não vendido",
     image: "/marketImage_wallpaper.png",
   };

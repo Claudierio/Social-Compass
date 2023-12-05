@@ -155,7 +155,7 @@ export default function NavBar({
     fetchData();
   }, []);
 
-  const handleItemClick = (path: string, itemName: string) => {
+  const handleClickQuit = (path: string, itemName: string) => {
     if (itemName === "Sair") {
       localStorage.clear();
       router.push("/login");
@@ -175,6 +175,14 @@ export default function NavBar({
   const handleDrawerClose = () => {
     setOpen(false);
     setModalOpen(false);
+  };
+
+  const handleDrawerItemClicked = (path: string, itemName: string) => {
+    setSelectedItem(itemName);
+    setModalOpen(false);
+    setOpen(false);
+    router.push(path);
+    handleDrawerClose(); // Close the drawer after clicking an item
   };
 
   return (
@@ -328,16 +336,39 @@ export default function NavBar({
               <Link
                 href="/homepage"
                 className={`${styles.drawerLink} ${styles.activeLink}`}
+                onClick={() =>
+                  handleDrawerItemClicked("/homepage", "Página inicial")
+                }
+                passHref
               >
                 Página inicial
               </Link>
-              <Link href="/profile" className={styles.drawerLink}>
+              <Link
+                href="/profile"
+                className={styles.drawerLink}
+                onClick={() =>
+                  handleDrawerItemClicked("/profile", "Meu Perfil")
+                }
+                passHref
+              >
                 Meu Perfil
               </Link>
-              <Link href="/marketplace" className={styles.drawerLink}>
+              <Link
+                href="/marketplace"
+                className={styles.drawerLink}
+                onClick={() =>
+                  handleDrawerItemClicked("/marketplace", "Marketplace")
+                }
+                passHref
+              >
                 Marketplace
               </Link>
-              <Link href="/" className={styles.drawerLink}>
+              <Link
+                href="/"
+                className={styles.drawerLink}
+                onClick={() => handleDrawerItemClicked("/", "Sair")}
+                passHref
+              >
                 Sair
               </Link>
             </div>

@@ -15,6 +15,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Avatar from "@mui/material/Avatar";
 import userAvatar from "/public/icons/user-avatar.png";
 import { Box, Card } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: string;
@@ -208,6 +209,20 @@ const HomePage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const router=useRouter()
+
+  useEffect(() => {
+    if (!isUserLoggedIn()) {
+      // Se o usuário não estiver logado, redirecione para a página de login
+      router.push("/login");
+    }
+  }, []);
+// Função para verificar se o usuário está logado
+  const isUserLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    return !!token; // Retorna true se o token existir, false caso contrário
+  };
 
   const [likeClicked, setLikeClicked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
@@ -536,10 +551,11 @@ const HomePage = () => {
                     marginRight: "16px",
                   }}
                 />
-                <div className={styles.productInfo}>
-                  <Typography>Armário Grande</Typography>
+                <div className={styles.productInfo} >
+
+                  <Typography>PlayStation 5</Typography>
                   <Typography className={styles.productPrice}>
-                    R$ 500,00
+                     R$ 3.999,00
                   </Typography>
                 </div>
               </AccordionDetails>
@@ -559,9 +575,9 @@ const HomePage = () => {
                   }}
                 />
                 <div className={styles.productInfo}>
-                  <Typography>Armário Grande</Typography>
+                  <Typography>Xbox Series X</Typography>
                   <Typography className={styles.productPrice}>
-                    R$ 500,00
+                  R$ 4.449,00
                   </Typography>
                 </div>
               </AccordionDetails>
@@ -581,9 +597,9 @@ const HomePage = () => {
                   }}
                 />
                 <div className={styles.productInfo}>
-                  <Typography>Armário Grande</Typography>
+                  <Typography>Monitor Gamer LG</Typography>
                   <Typography className={styles.productPrice}>
-                    R$ 500,00
+                     R$ 821,65
                   </Typography>
                 </div>
               </AccordionDetails>
@@ -603,9 +619,9 @@ const HomePage = () => {
                   }}
                 />
                 <div className={styles.productInfo}>
-                  <Typography>Armário Grande</Typography>
+                  <Typography>Notebook Acer</Typography>
                   <Typography className={styles.productPrice}>
-                    R$ 500,00
+                      R$ 3.578,69
                   </Typography>
                 </div>
               </AccordionDetails>

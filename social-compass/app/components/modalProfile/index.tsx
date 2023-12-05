@@ -333,7 +333,6 @@ const ModalProfile: React.FC<ModalProfileProps> = ({ open, onClose }) => {
         sx={{
           top: "8%",
           left: isMobile ? "fit-content" : "37.5%",
-
           width: isMobile ? "fit-content" : "400px",
         }}
       >

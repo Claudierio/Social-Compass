@@ -11,51 +11,57 @@ import ModalMarket from "../../components/modalMarket";
 const products = [
   {
     id: 1,
-    title: "Produto 1",
+    title: "PlayStation 5",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "Maravilhe-se com os gráficos incríveis e experimente os recursos do novo PS5. Compre agora e aproveite as ofertas para o novo PlayStation 5",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: "R$ 3.999,00"
   },
   {
     id: 2,
-    title: "Produto 2",
+    title: "Xbox Series X",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "Descubra o Xbox mais rápido e potente de todos os tempos com o Xbox Series X. Aproveite os jogos em 4K em até 120 quadros por segundo nesse console",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: "R$ 4.449,00"
   },
   {
     id: 3,
-    title: "Produto 3",
+    title: "Monitor Gamer LG UltraGear",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "Desenvolvido para o gamer, os recursos mais avançados e design eletrizante garantem uma experiência imersiva, taxa de atualização de 144Hz.",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: "R$ 821,65"
   },
   {
     id: 4,
-    title: "Produto 1",
+    title: "Notebook Acer Aspire 5",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "Os notebooks da linha aspire 5 são convenientemente portáteis e elegantes para acompanhar suas tarefas do dia a dia. Os recursos tecnológicos de sua confiança ao seu lado sempre que precisar",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: "R$ 3.578,69"
   },
   {
     id: 5,
-    title: "Produto 2",
+    title: "Apple iPhone 13 256GB",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "O iPhone 13 é uma combinação perfeita de beleza e desempenho, oferecendo inúmeras razões para você se apaixonar por ele. Se você busca um smartphone que atenda a todas as suas necessidades.",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: "R$ 4.399,00"
   },
   {
     id: 6,
-    title: "Produto 3",
+    title: "Headphone Havit",
     description:
-      "lLorem ipsum dolor sit amet, consectetur adipisicing elit. Officia reiciendis eligendi ullam sed, optio eum provident libero sapiente iure odit eos, officiis molestiae dignissimos mollitia expedita id natus magni aspernatur!",
+      "Headset Gamer Havit H2002D Aparência e textura proporcionais, simples e generosas. Jaqueta de liga leve com frente e superfície de plástico com revestimento de piano. Design Gamer em preto.",
     status: "Ainda não vendido",
     image: "/marketImage.png",
+    value: ""
   },
 ];
 
@@ -171,7 +177,7 @@ const Marketplace = () => {
           </div>
         </div>
 
-        <div className={styles.contentMarket} style={{ marginTop: "36px" }}>
+        <div className={styles.contentMarket} style={{ marginTop: "36px"}}>
           <Grid container spacing={0}>
             {products.map((product) => (
               <Grid item xs={12} sm={6} md={4} key={product.id}>
@@ -223,7 +229,7 @@ const Marketplace = () => {
                       textAlign: "left",
                     }}
                   >
-                    R$ 300,00
+                    {product.value}
                   </Typography>
 
                   <Link

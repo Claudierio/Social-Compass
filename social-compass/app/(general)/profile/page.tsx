@@ -84,11 +84,14 @@ const profile = () => {
   } = useStore();
   const cardMarginLeft = modalOpen ? "1%" : "";
   const [posts, setPosts] = useState<PostData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const userId = localStorage.getItem("id");
 
   const fetchPosts = async () => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    if (token && userId) {
       try {
         const response = await fetch(`http://localhost:3001/posts`, {
           headers: {
@@ -101,10 +104,11 @@ const profile = () => {
           const data = await response.json();
 
           // Filtrar apenas os posts do usuário logado
-          const userId = localStorage.getItem("id");
-          const userPosts = data.filter(
-            (post: PostData) => post.author.id === userId
-          );
+          const userPosts = data.filter((post: PostData) => post.author.id === userId);
+          setPosts(userPosts);
+
+          console.log("Todos os posts:", data);
+          console.log("Posts do usuário logado:", userPosts);
 
           const sortedPosts = userPosts
             .map((post: PostData) => ({
@@ -134,12 +138,6 @@ const profile = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchPosts();
-    };
-    fetchData();
-  }, []);
 
   const homePostStyle = {
     width: modalOpen ? "calc(100% - 330px)" : "100%",
@@ -174,6 +172,17 @@ const profile = () => {
 
     fetchData();
   }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchPosts();
+      setLoading(false); 
+      console.log("Posts a serem renderizados:", posts);
+    };
+    fetchData();
+  }, [userId]);
+
   return (
     <div className={styles.profileMain}>
       <Navbar
@@ -309,7 +318,7 @@ const profile = () => {
                 sx={{
                   display: "flex",
                   color: "#E9B425",
-                  width: isMobile ? "300px" : "1050px",
+
                   background: "transparent",
                 }}
               >
@@ -318,7 +327,7 @@ const profile = () => {
                   sx={{
                     fontSize: 16,
                     fontWeight: "50",
-                    marginLeft: isMobile ? 0.5 : 50,
+
                     cursor: "pointer",
                   }}
                 >
@@ -348,7 +357,7 @@ const profile = () => {
                 </Typography>
               </Card>
             </div>
-            <Postage />
+            {posts.length > 0 && <Postage />}
           </div>
         </div>
         <Card />
