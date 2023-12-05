@@ -279,9 +279,9 @@ export default function NavBar({
               </Typography>
               <Link href="/profile" passHref>
                 <StyledBadge
-                /*                   overlap="circular"
+                   overlap="circular"
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  variant="dot" */
+                  variant="dot" 
                 >
                   <Avatar
                     alt=""
