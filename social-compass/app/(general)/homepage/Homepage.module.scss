@@ -3,7 +3,7 @@
     background: #1E1F23;
     justify-content: flex-start;
     padding: 16px;
-    border: 2px solid #2E2F36;
+    border: 2px solid #97979b;
     border-radius: 16px;
     width: 75%;
     height: auto;
@@ -39,8 +39,27 @@
     position: absolute;
     bottom: 8px;
     width: 100px
-    
 }
+
+.containerButton:hover {
+    color: black;
+  }
+  
+  .containerButton:active {
+    animation: clickAnimation 0.3s ease-out;
+  }
+  
+  @keyframes clickAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 
 
 .accordions {
@@ -50,7 +69,7 @@
     align-items: flex-end;
     right: 2%;
     top: 10%;
-    position: fixed;
+    position: absolute;
     z-index: 1;
 }
 

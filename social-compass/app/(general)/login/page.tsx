@@ -220,9 +220,6 @@ export default function Login() {
                 </span>
               </div>
               <div>
-                <Link className={styles.loginLink} href="/homepage">
-                  <span>Home</span>
-                </Link>
               </div>
             </form>
           </Paper>

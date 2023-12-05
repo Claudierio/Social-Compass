@@ -6,9 +6,6 @@ import Navbar from "../../components/navbar";
 import styles from "./profile.module.scss";
 import InfoProfile from "../../components/infoProfile";
 import ModalProfile from "../../components/modalProfile";
-import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
-import Stack from '@mui/material/Stack';
 import {
   Card,
   CardMedia,
@@ -20,6 +17,26 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Postage from "../../components/postage";
+
+//Interfaces para o post
+interface Author {
+  id: string;
+  name: string;
+  image: string;
+}
+
+interface PostData {
+  id: string;
+  image: string;
+  text: string;
+  author: Author;
+  location: string;
+  createdAt: string;
+  comments: Comment[];
+  likes: string;
+}
 
 const theme = createTheme({
   typography: {
@@ -66,6 +83,63 @@ const profile = () => {
     setModalOpen,
   } = useStore();
   const cardMarginLeft = modalOpen ? "1%" : "";
+  const [posts, setPosts] = useState<PostData[]>([]);
+
+  const fetchPosts = async () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const response = await fetch(`http://localhost:3001/posts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Filtrar apenas os posts do usuário logado
+          const userId = localStorage.getItem("id");
+          const userPosts = data.filter(
+            (post: PostData) => post.author.id === userId
+          );
+
+          const sortedPosts = userPosts
+            .map((post: PostData) => ({
+              ...post,
+              createdAt: new Date(post.createdAt),
+            }))
+            .sort((a: PostData, b: PostData) => {
+              const dateA = new Date(a.createdAt).toISOString();
+              const dateB = new Date(b.createdAt).toISOString();
+
+              if (dateA < dateB) {
+                return 1;
+              } else if (dateA > dateB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+
+          setPosts(sortedPosts);
+        } else {
+          console.error("Informacoes dos posts nao obtidas", response.status);
+        }
+      } catch (error) {
+        console.error("Erro ao obter informações dos posts:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchPosts();
+    };
+    fetchData();
+  }, []);
 
   const homePostStyle = {
     width: modalOpen ? "calc(100% - 330px)" : "100%",
@@ -87,36 +161,6 @@ const profile = () => {
       router.push("/login");
     }
   }, []);
-
-  const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-      backgroundColor: '#44b700',
-      color: '#44b700',
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-      '&::after': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        animation: 'ripple 1.2s infinite ease-in-out',
-        border: '1px solid currentColor',
-        content: '""',
-      },
-    },
-    '@keyframes ripple': {
-      '0%': {
-        transform: 'scale(.8)',
-        opacity: 1,
-      },
-      '100%': {
-        transform: 'scale(2.4)',
-        opacity: 0,
-      },
-    },
-  }));
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,7 +220,6 @@ const profile = () => {
                 alt="Capa do perfil"
               />
 
-
               <Avatar
                 alt="Imagem do Perfil"
                 src={avatar}
@@ -197,7 +240,6 @@ const profile = () => {
                   pt: isMobile ? 2 : 5,
                   pl: isMobile ? 23 : 27,
                   pb: isMobile ? 1 : 2,
-
                   pr: 2,
                 }}
               >
@@ -205,19 +247,19 @@ const profile = () => {
                   sx={{
                     pb: 2,
                     pr: 2,
-
                     color: "#E9B425",
                     width: isMobile ? "140px" : "30",
-                  }}>
+                  }}
+                >
                   <Typography
                     variant="h4"
                     sx={{
                       fontWeight: "600",
                       wordBreak: "break-word",
                       width: isMobile ? "100%" : "380%",
-
                       fontSize: isMobile ? 21 : 30,
-                    }}>
+                    }}
+                  >
                     {name}
                   </Typography>
 
@@ -225,7 +267,8 @@ const profile = () => {
                     variant="subtitle1"
                     sx={{
                       width: isMobile ? "150%" : "250%",
-                    }}>
+                    }}
+                  >
                     {office}
                   </Typography>
                 </Box>
@@ -238,22 +281,15 @@ const profile = () => {
                       ml: isMobile ? -40 : 120,
                       background:
                         "linear-gradient(45deg, #ad2d14 30%, #f42e07 90%)",
-                      color: "#ffffff",
-                      borderRadius: "35px",
-                      height: " 54px",
                       marginTop: isMobile ? "50px" : "-35px",
-                      textTransform: "none",
-                      fontWeight: "bold",
-                      transition: "color 0.3s",
-                      width: "140px",
-                      fontSize: "15px",
                     }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color = "#000000")
                     }
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.color = "#FFFFFF")
-                    }>
+                    }
+                  >
                     Editar Perfil
                   </Button>
                   <ModalProfile
@@ -265,7 +301,57 @@ const profile = () => {
             </Card>
           </Box>
         </section>
-        <InfoProfile />
+        <div className={styles.containerProfile}>
+          <InfoProfile />
+          <div className={styles.postscontainer}>
+            <div className={styles.followrs}>
+              <Card
+                sx={{
+                  display: "flex",
+                  color: "#E9B425",
+                  width: isMobile ? "300px" : "1050px",
+                  background: "transparent",
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "50",
+                    marginLeft: isMobile ? 0.5 : 50,
+                    cursor: "pointer",
+                  }}
+                >
+                  Followers
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "50",
+                    marginLeft: isMobile ? 3 : 10,
+                    cursor: "pointer",
+                  }}
+                >
+                  Following
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    marginLeft: isMobile ? 3 : 10,
+                    cursor: "pointer",
+                  }}
+                >
+                  Posts
+                </Typography>
+              </Card>
+            </div>
+            <Postage />
+          </div>
+        </div>
+        <Card />
       </ThemeProvider>
     </div>
   );

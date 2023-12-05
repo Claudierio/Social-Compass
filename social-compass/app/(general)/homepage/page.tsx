@@ -454,7 +454,7 @@ const HomePage = () => {
               style={{
                 width: "272px",
                 borderRadius: "16px",
-                border: "2px solid var(--gray-gray-600, #2E2F36)",
+                border: "2px solid #97979b",
                 background: "var(--gray-gray-700, #1E1F23)",
                 display: "block",
                 color: "white",
@@ -501,7 +501,7 @@ const HomePage = () => {
               style={{
                 width: "272px",
                 borderRadius: "16px",
-                border: "2px solid var(--gray-gray-600, #2E2F36)",
+                border: "2px solid #97979b",
                 background: "var(--gray-gray-700, #1E1F23)",
                 marginTop: "20px",
               }}

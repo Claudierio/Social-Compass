@@ -18,7 +18,7 @@
 }
 
 .clock {
-    margin-top: 6px;
+    margin-top: 4px;
     margin-right: 6px;
 }
 
@@ -39,7 +39,7 @@
     width: 230px;
     height: 272px;
     background: #1E1F23;
-    border: 2px solid #2E2F36;
+    border: 2px solid #97979b;
     border-radius: 16px;
     flex: none;
     order: 0;
@@ -106,7 +106,7 @@
     background: #1E1F23;
     justify-content: flex-start;
     padding: 16px;
-    border: 2px solid #2E2F36;
+    border: 2px solid #97979b;
     border-radius: 16px;
     width: 75%;
     flex: none;
@@ -164,6 +164,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    
 }
 
 
@@ -216,16 +217,17 @@
 .userComment {
     color: #FFF;
     font-family: MontSerrat;
-    font-size: 12px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    margin-right: 5px;
 }
 
 .descriComment {
     color: #D9D9D9;
     font-family: MontSerrat;
-    font-size: 12px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

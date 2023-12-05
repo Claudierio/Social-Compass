@@ -112,7 +112,6 @@ const fetchPosts = async () => {
       if (response.ok) {
         const data = await response.json();
 
-        // Map each post to include comments
         const postsWithComments = data.map((post: PostData) => ({
           ...post,
           comments: post.comments.map((comment: Comment) => ({
@@ -359,6 +358,45 @@ const Postage = () => {
   };
   const [likeCount, setLikeCount] = useState(0);
 
+  const [nome, setNome] = useState("");
+  const [image, setImage] = useState("");
+  const getUserInfo = async () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("id");
+    if (token && userId) {
+      try {
+        const response = await fetch(`http://localhost:3001/users/${userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        }
+      } catch (error) {
+        console.error("Erro ao obter informações do usuário:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo();
+
+      if (userInfo) {
+        setNome(userInfo.name);
+        setImage(userInfo.image);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+
   return (
     <section style={{ marginTop: "10px", marginBottom: "100px" }}>
       <div className={styles.timeline}>
@@ -388,8 +426,8 @@ const Postage = () => {
                         <svg
                           className={styles.clock}
                           xmlns="http://www.w3.org/2000/svg"
-                          width="12"
-                          height="12"
+                          width="16"
+                          height="16"
                           viewBox="0 0 12 12"
                           fill="none"
                         >
@@ -520,8 +558,8 @@ const Postage = () => {
                     style={{ marginTop: "16px" }}
                   >
                     <Avatar
-                      alt={postData.author.name}
-                      src={postData.author.image}
+                      alt="Foto de usuário"
+                      src={image}
                       style={{
                         width: "32px",
                         height: "32px",
@@ -624,9 +662,6 @@ const Postage = () => {
                   )}
                 </div>
 
-                <div className={styles.seeAllComments}>
-                  {/* ... (mesmo código) */}
-                </div>
               </div>
             </section>
           </Box>

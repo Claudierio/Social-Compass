@@ -7,11 +7,11 @@ import useStore from "../../(general)/stateZustand";
 
 const Auth = ({ children }) => {
   const router = useRouter();
-  const { isLoggedIn } = useStore(); // Substitua pelo seu estado de autenticação
+  const { isLoggedIn } = useStore(); 
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/login'); // Redirecione para a página de login se não estiver autenticado
+      router.push('/login'); 
     }
   }, [isLoggedIn]);
 

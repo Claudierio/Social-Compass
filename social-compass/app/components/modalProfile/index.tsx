@@ -132,8 +132,8 @@ const ModalProfile: React.FC<ModalProfileProps> = ({ open, onClose }) => {
 
     if (year.length === 4) {
       const yearNum = parseInt(year, 10);
-      if (yearNum < 1900) {
-        year = "1900";
+      if (yearNum < 1923) {
+        year = "1923";
       } else if (yearNum > 2023) {
         year = "2023";
       }

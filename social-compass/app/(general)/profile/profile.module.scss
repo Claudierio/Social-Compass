@@ -15,10 +15,52 @@
   .textYellow {
     color: #e9b425;
   }
+
+  .buttonEdit{
+    text-transform: none;
+    font-weight: bold;
+    transition: color 0.3s;
+    width: 140px;
+    font-size: 15px;
+    height: 54px;
+    color: #ffffff;
+    border-radius: 35px;
+  }
   
   @media (max-width: 768px) {
     .buttonEdit {
       margin-top: 32px;
     }
   }
-  
+
+  .containerProfile{
+    display: flex;
+    margin-left: 154px;
+  }
+
+  @media (max-width: 768px) {
+    .containerProfile {
+      display: contents;
+      margin-left: 0px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .postscontainer{
+      width: 76%;
+      margin-left: 46px;
+    }
+
+    .homePostStyle{
+      width: 76%;
+      margin-left: 46px;
+    }
+  }
+
+  .followrs{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    
+  }

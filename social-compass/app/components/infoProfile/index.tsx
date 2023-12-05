@@ -117,7 +117,6 @@ const InfoProfile = () => {
         <Box
           sx={{
             display: "flex",
-
             flexDirection: isMobile ? "column" : "",
             justifyContent: "center",
             p: isMobile ? 1 : 4,
@@ -221,44 +220,6 @@ const InfoProfile = () => {
               width: isMobile ? "80%" : "20%",
             }}
           >
-            <Card
-              sx={{
-                display: "flex",
-                color: "#E9B425",
-                width: isMobile ? "300px" : "1050px",
-                background: "transparent",
-              }}>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontSize: 16,
-                  fontWeight: "50",
-                  marginLeft: isMobile ? 0.5 : 50,
-                  cursor: "pointer",
-                }}>
-                Followers
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontSize: 16,
-                  fontWeight: "50",
-                  marginLeft: isMobile ? 3 : 10,
-                  cursor: "pointer",
-                }}>
-                Following
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  marginLeft: isMobile ? 3 : 10,
-                  cursor: "pointer",
-                }}>
-                Posts
-              </Typography>
-            </Card>
           </Box>
         </Box>
       </section>
