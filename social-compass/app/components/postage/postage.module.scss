@@ -157,6 +157,7 @@
 /* COMMENTS */
 
 .everyComments {
+    font-family: MontSerrat;
     color: #FFF;
     font-size: 12px;
     margin-top: 16px;
@@ -204,7 +205,7 @@
 }
 
 .postLike.clicked {
-    color: var(--yellow, #E9B425); 
+    color: var(--yellow, #E9B425);
 }
 
 .commentsPost {
@@ -234,9 +235,46 @@
     width: 45px;
     color: white;
     display: flex;
-    padding: 0px 16px;
+    padding: 0px 15px;
     align-items: flex-start;
     border-radius: 16px;
     background: var(--gray-gray-200, #A1A3A7);
     margin-left: 8px;
+}
+
+.allComments {
+    margin-top: 16px;
+    color: white;
+    color: "white";
+    font-family: MontSerrat;
+    font-size: "14px";
+    font-weight: "400";
+}
+
+.everyCommentsText {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: var(--yellow, #E9B425);
+    font-family: MontSerrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@media (max-width: 600px) {
+
+    /* Estilos específicos para dispositivos móveis com largura de tela até 600 pixels */
+    .likeText,
+    .postComment,
+    .postShare {
+        font-size: 12px;
+    }
+
+    .numLikes {
+        font-size: 12px;
+        /* Tamanho de fonte menor para dispositivos móveis */
+    }
 }

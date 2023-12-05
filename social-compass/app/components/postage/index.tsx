@@ -39,12 +39,11 @@ interface PostData {
   likes: string;
 }
 
-// Interface para comentários
 interface Comment {
   id: string;
   content: string;
   author: Author;
-  createdAt: string; // Adicione a propriedade createdAt
+  createdAt: string;
 }
 
 const fetchUsers = async (): Promise<User[]> => {
@@ -124,6 +123,7 @@ const fetchPosts = async () => {
               name: comment.author.name,
               image: comment.author.image,
             },
+            createdAt: comment.createdAt,
           })),
           createdAt: new Date(post.createdAt),
         }));
@@ -333,6 +333,17 @@ const Postage = () => {
     };
   }, []);
 
+  const [showAllCommentsMap, setShowAllCommentsMap] = useState<{
+    [postId: string]: boolean;
+  }>({});
+
+  const handleShowAllComments = (postId: string) => {
+    setShowAllCommentsMap((prevMap) => ({
+      ...prevMap,
+      [postId]: !prevMap[postId],
+    }));
+  };
+
   const handleCommentClick = (postId: string) => {
     setCommentClickedMap((prevMap) => ({
       ...prevMap,
@@ -403,7 +414,6 @@ const Postage = () => {
                   <div className={styles.postDescription}>
                     <p>{postData.text}</p>
                   </div>
-
                   <div className={styles.postImage}>
                     <img
                       src={postData.image}
@@ -444,7 +454,7 @@ const Postage = () => {
                         style={{
                           background: likeClickedMap[postData.id]
                             ? "#e9b425"
-                            : "transparent",
+                            : "#A1A3A7",
                         }}
                       >
                         {postData.likes && `${postData.likes}`}
@@ -507,9 +517,7 @@ const Postage = () => {
                 <div className={styles.postComments}>
                   <div
                     className={styles.avatarContainer}
-                    style={{
-                      marginTop: "16px",
-                    }}
+                    style={{ marginTop: "16px" }}
                   >
                     <Avatar
                       alt={postData.author.name}
@@ -534,47 +542,90 @@ const Postage = () => {
                     />
                   </div>
 
-                  <div className={styles.everyComments}>
-                    <span className={styles.everyCommentsText}>
+                  <div className={styles.allComments}>
+                    <Typography>
                       Todos os comentários
-                    </span>
+                    </Typography>
                   </div>
 
-                  {postData.comments.map((comment: Comment, commentIndex) => (
-                    <div key={commentIndex} className={styles.commentsPost}>
-                      {/* Render each comment */}
-                      <Avatar
-                        alt={comment.author.name}
-                        src={comment.author.image}
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          marginRight: "16px",
-                        }}
-                      />
-                      <Typography>
-                        <span className={styles.userComment}>
-                          {comment.author.name}:
-                        </span>
-                        <span className={styles.descriComment}>
-                          {comment.content}
-                        </span>
-                      </Typography>
-                    </div>
-                  ))}
+                  <div className={styles.everyComments}>
+                    {/* Renderiza o primeiro comentário, se existir */}
+                    {postData.comments.length > 0 && (
+                      <div className={styles.commentsPost}>
+                        <Avatar
+                          alt={postData.comments[0].author.name}
+                          src={postData.comments[0].author.image}
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            marginRight: "16px",
+                          }}
+                        />
+                        <Typography>
+                          <span className={styles.userComment}>
+                            {postData.comments[0].author.name}:
+                          </span>
+                          <span className={styles.descriComment}>
+                            {postData.comments[0].content}
+                          </span>
+                        </Typography>
+                      </div>
+                    )}
 
-                  <Divider
-                    style={{ marginTop: "16px", background: "#A1A3A7" }}
-                  />
+                    <Divider
+                      style={{ marginTop: "16px", background: "#A1A3A7",marginBottom: "16px" }}
+                    />
 
-                  <div className={styles.seeAllComments}>
-                    <p
-                      className={styles.seeAllCommentsText}
-                      style={{ marginTop: "16px", cursor: "pointer" }}
-                    >
-                      Ver todos os comentários
-                    </p>
+                    {/* Renderiza o link "Ver todos os comentários" apenas se houver mais de um comentário */}
+                    {postData.comments.length > 1 && (
+                      <span
+                        className={styles.everyCommentsText}
+                        onClick={() => handleShowAllComments(postData.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showAllCommentsMap[postData.id]
+                          ? "Ver menos comentários"
+                          : "Ver todos os comentários"}
+                      </span>
+                    )}
                   </div>
+
+                  {/* Renderiza os comentários adicionais se o estado showAllCommentsMap indicar */}
+                  {showAllCommentsMap[postData.id] && (
+                    <>
+                      {postData.comments
+                        .slice(1)
+                        .map((comment, commentIndex) => (
+                          <div
+                            key={commentIndex}
+                            className={styles.commentsPost}
+                          >
+                            {/* Renderiza cada comentário adicional */}
+                            <Avatar
+                              alt={comment.author.name}
+                              src={comment.author.image}
+                              style={{
+                                width: "32px",
+                                height: "32px",
+                                marginRight: "16px",
+                              }}
+                            />
+                            <Typography>
+                              <span className={styles.userComment}>
+                                {comment.author.name}:
+                              </span>
+                              <span className={styles.descriComment}>
+                                {comment.content}
+                              </span>
+                            </Typography>
+                          </div>
+                        ))}
+                    </>
+                  )}
+                </div>
+
+                <div className={styles.seeAllComments}>
+                  {/* ... (mesmo código) */}
                 </div>
               </div>
             </section>
