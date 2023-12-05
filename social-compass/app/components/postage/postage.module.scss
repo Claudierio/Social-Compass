@@ -13,20 +13,20 @@
     }
 }
 
-.postDate{
+.postDate {
     display: flex;
 }
 
-.clock{
+.clock {
     margin-top: 6px;
     margin-right: 6px;
 }
 
 
-.postInfo{
+.postInfo {
     margin-top: -5px;
     color: white;
-    font-weight: 500 ;
+    font-weight: 500;
 }
 
 .post {
@@ -116,7 +116,7 @@
 
 }
 
-.location{
+.location {
     color: white;
     font-weight: 500;
     margin-left: 5px;
@@ -126,6 +126,7 @@
 .postDescription {
     color: white;
     margin-top: 16px;
+    margin-bottom: 10px;
 }
 
 /* Buttons */
@@ -191,16 +192,51 @@
     max-height: 330px;
     overflow-y: auto;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
-      }
-  }
+    }
+}
 
-  .date{
+.date {
     color: var(--gray-gray-300, #75767D);
     font-weight: 500;
-  }
+}
 
-  .postLike.clicked {
-    color: var(--yellow, #E9B425); // Substitua por sua cor desejada
-  }
+.postLike.clicked {
+    color: var(--yellow, #E9B425); 
+}
+
+.commentsPost {
+    margin-top: 16px;
+    display: flex;
+}
+
+.userComment {
+    color: #FFF;
+    font-family: MontSerrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.descriComment {
+    color: #D9D9D9;
+    font-family: MontSerrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.numLikes {
+    width: 45px;
+    color: white;
+    display: flex;
+    padding: 0px 16px;
+    align-items: flex-start;
+    border-radius: 16px;
+    background: var(--gray-gray-200, #A1A3A7);
+    margin-left: 8px;
+}

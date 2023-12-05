@@ -8,12 +8,13 @@ import React, { useState, useEffect } from "react";
 import useStore from "../../(general)/stateZustand";
 import Avatar from "@mui/material/Avatar";
 import userAvatar from "/public/icons/user-avatar.png";
-import { Box, Card } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ChatIcon from "@mui/icons-material/Chat";
 import ShareIcon from "@mui/icons-material/Share";
 
+//Interface para usuário
 interface User {
   id: string;
   name: string;
@@ -34,7 +35,16 @@ interface PostData {
   author: Author;
   location: string;
   createdAt: string;
+  comments: Comment[];
   likes: string;
+}
+
+// Interface para comentários
+interface Comment {
+  id: string;
+  content: string;
+  author: Author;
+  createdAt: string; // Adicione a propriedade createdAt
 }
 
 const fetchUsers = async (): Promise<User[]> => {
@@ -98,6 +108,25 @@ const fetchPosts = async () => {
           });
 
         return sortedPosts;
+      }
+      //Comments
+      if (response.ok) {
+        const data = await response.json();
+
+        // Map each post to include comments
+        const postsWithComments = data.map((post: PostData) => ({
+          ...post,
+          comments: post.comments.map((comment: Comment) => ({
+            id: comment.id,
+            content: comment.content,
+            author: {
+              id: comment.author.id,
+              name: comment.author.name,
+              image: comment.author.image,
+            },
+          })),
+          createdAt: new Date(post.createdAt),
+        }));
       } else {
         console.error("Informacoes dos posts nao obtidas", response.status);
       }
@@ -133,6 +162,69 @@ const Postage = () => {
     setSelectedItem,
     setModalOpen,
   } = useStore();
+  const [likeClickedMap, setLikeClickedMap] = useState<{
+    [postId: string]: boolean;
+  }>({});
+  const [commentClickedMap, setCommentClickedMap] = useState<{
+    [postId: string]: boolean;
+  }>({});
+  const [shareClickedMap, setShareClickedMap] = useState<{
+    [postId: string]: boolean;
+  }>({});
+
+  const [comments, setComments] = useState<{ [postId: string]: Comment[] }>({});
+  const addComment = (postId: string, comment: Comment) => {
+    setComments((prevComments) => ({
+      ...prevComments,
+      [postId]: [...(prevComments[postId] || []), comment],
+    }));
+  };
+
+  const addCommentRequest = async (postId: string, content: string) => {
+    const token = localStorage.getItem("token");
+    const authorId = localStorage.getItem("id"); // Substitua pelo ID do usuário logado
+
+    if (token) {
+      try {
+        const response = await fetch(`http://localhost:3001/comments`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            content,
+            authorId,
+            postId,
+          }),
+        });
+
+        if (response.ok) {
+          const newComment = await response.json();
+          addComment(postId, newComment);
+        } else {
+          console.error("Erro ao adicionar o comentário:", response.status);
+        }
+      } catch (error) {
+        console.error("Erro ao adicionar o comentário:", error);
+      }
+    }
+  };
+
+  const handleCommentInputKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    postId: string
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      const inputValue = (event.target as HTMLInputElement).value.trim();
+      if (inputValue !== "") {
+        await addCommentRequest(postId, inputValue);
+        (event.target as HTMLInputElement).value = ""; // Limpa o input após adicionar o comentário
+      }
+    }
+  };
 
   const [posts, setPosts] = useState<PostData[]>([]);
   useEffect(() => {
@@ -177,11 +269,13 @@ const Postage = () => {
 
   const handleLikeClick = async (postId: string) => {
     try {
-
       await likePost(postId);
 
-      // Atualizar o estado local com o novo número de curtidas
-      setLikeClicked(!likeClicked);
+      // Atualizar o estado para o post clicado
+      setLikeClickedMap((prevMap) => ({
+        ...prevMap,
+        [postId]: true,
+      }));
       setLikeCount((prevCount) => prevCount + 1);
     } catch (error) {
       console.error("Erro ao lidar com a curtida do post:", error);
@@ -239,18 +333,19 @@ const Postage = () => {
     };
   }, []);
 
-  const [likeClicked, setLikeClicked] = useState(false);
-  const [commentClicked, setCommentClicked] = useState(false);
-  const [shareClicked, setShareClicked] = useState(false);
-
-  const handleCommentClick = () => {
-    setCommentClicked(!commentClicked);
+  const handleCommentClick = (postId: string) => {
+    setCommentClickedMap((prevMap) => ({
+      ...prevMap,
+      [postId]: !prevMap[postId],
+    }));
   };
 
-  const handleShareClick = () => {
-    setShareClicked(!shareClicked);
+  const handleShareClick = (postId: string) => {
+    setShareClickedMap((prevMap) => ({
+      ...prevMap,
+      [postId]: !prevMap[postId],
+    }));
   };
-
   const [likeCount, setLikeCount] = useState(0);
 
   return (
@@ -325,7 +420,7 @@ const Postage = () => {
                 <div className={styles.postInteraction}>
                   <div
                     className={`${styles.postLike} ${
-                      likeClicked ? styles.clicked : ""
+                      likeClickedMap[postData.id] ? styles.clicked : ""
                     }`}
                     onClick={() => handleLikeClick(postData.id)}
                   >
@@ -341,7 +436,19 @@ const Postage = () => {
                           marginRight: "5px",
                         }}
                       />
-                      Curtiu {postData.likes && `(${postData.likes})`}
+                      Curtiu{" "}
+                      <div
+                        className={`${styles.numLikes} ${
+                          likeClickedMap[postData.id] ? styles.clicked : ""
+                        }`}
+                        style={{
+                          background: likeClickedMap[postData.id]
+                            ? "#e9b425"
+                            : "transparent",
+                        }}
+                      >
+                        {postData.likes && `${postData.likes}`}
+                      </div>
                     </span>
                     <div className={styles.likesBadge} id="likesBadge">
                       <span
@@ -353,9 +460,9 @@ const Postage = () => {
 
                   <div
                     className={`${styles.postComment} ${
-                      commentClicked ? styles.clicked : ""
+                      commentClickedMap[postData.id] ? styles.clicked : ""
                     }`}
-                    onClick={handleCommentClick}
+                    onClick={() => handleCommentClick(postData.id)}
                   >
                     <span
                       className={styles.commentText}
@@ -377,9 +484,9 @@ const Postage = () => {
 
                   <div
                     className={`${styles.postShare} ${
-                      shareClicked ? styles.clicked : ""
+                      shareClickedMap[postData.id] ? styles.clicked : ""
                     }`}
-                    onClick={handleShareClick}
+                    onClick={() => handleShareClick(postData.id)}
                   >
                     <span
                       className={styles.shareText}
@@ -405,8 +512,8 @@ const Postage = () => {
                     }}
                   >
                     <Avatar
-                      alt="Avatar"
-                      src={userAvatar.src}
+                      alt={postData.author.name}
+                      src={postData.author.image}
                       style={{
                         width: "32px",
                         height: "32px",
@@ -418,9 +525,12 @@ const Postage = () => {
                       type="text"
                       name="text"
                       className={styles.inputPost}
-                      placeholder="No que você está pensando?"
+                      placeholder="Tem algo a dizer?"
                       onFocus={() => setIsFocused(true)}
                       onBlur={() => setIsFocused(false)}
+                      onKeyDown={(event) =>
+                        handleCommentInputKeyDown(event, postData.id)
+                      }
                     />
                   </div>
 
@@ -429,6 +539,29 @@ const Postage = () => {
                       Todos os comentários
                     </span>
                   </div>
+
+                  {postData.comments.map((comment: Comment, commentIndex) => (
+                    <div key={commentIndex} className={styles.commentsPost}>
+                      {/* Render each comment */}
+                      <Avatar
+                        alt={comment.author.name}
+                        src={comment.author.image}
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          marginRight: "16px",
+                        }}
+                      />
+                      <Typography>
+                        <span className={styles.userComment}>
+                          {comment.author.name}:
+                        </span>
+                        <span className={styles.descriComment}>
+                          {comment.content}
+                        </span>
+                      </Typography>
+                    </div>
+                  ))}
 
                   <Divider
                     style={{ marginTop: "16px", background: "#A1A3A7" }}

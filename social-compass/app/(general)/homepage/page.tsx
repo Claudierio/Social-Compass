@@ -27,7 +27,6 @@ interface PostData {
   location: string;
   image: string;
   authorId: string;
-  createdAt: string; // Adicione esta propriedade
 }
 
 const defaultPostData: PostData = {
@@ -35,7 +34,6 @@ const defaultPostData: PostData = {
   location: "",
   image: "",
   authorId: "",
-  createdAt: "",
 };
 
 const getUsers = async (): Promise<User[]> => {
@@ -152,8 +150,6 @@ const HomePage = () => {
     const { value } = e.target;
     setPostData((prevState) => ({ ...prevState, location: value }));
   };
-
-  
 
   const handlePostClick = async () => {
     try {
