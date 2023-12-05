@@ -1,40 +1,21 @@
 <div>
     <h1>Challenge 3 - Social Compass</h1>
-    <img src="./public/Wallpaper-login.png"/>
-    <img src="./public/Wallpaper-home.png"/>
+    ## :camera_flash: Screenshots
+    <img src="/social-compass/public/Wallpaper-login.png"/>
+    <img src="/social-compass/public/Wallpaper-home.png"/>
 </div>
 
+<h3>Estudante estagiário:
+   <a href = "https://github.com/Claudierio"> Claudierio Baltazar </a> 
+</h3>
+
+## :information_source: About The App
+Homepage of a Compass.UOL social application focused on creating and viewing posts. The project follows a Figma project with JSON data fetched and consumed by a simple API
+
 ## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- First, keep your back-end and front open
+- On the backend, you will need to create a .env file and fill in these two fields:
+- 'DATABASE_URL'
+- 'JWT_SECRET'
+- After that, type npm install in the back-end and front-end
+- And run both the front and back with npm run dev
